@@ -1,27 +1,50 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
-const App = (props) => {
+const Button = ({ onClick, text }) => (
+  <button onClick={onClick}>
+    {text}
+  </button>
+)
+
+const Anecdote = ({text, votes}) => {
+  return (
+    <div>
+      {text}<br />
+      has {votes} votes
+    </div>
+  )
+}
+
+const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0)
+  const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
 
   const nextAnecdote = () => {
     let next = getRandomAnecdote();
     // sometimes random number is same as previous
     // to avoid duplication get a random number again
     while(next === selected) {
-      next = getRandomAnecdote();
+      next = getRandomAnecdote()
     }
     setSelected(next);
   }
 
+  const voteAnecdote = () => {
+    const updatedVotes = [...votes];
+    updatedVotes[selected]++;
+    setVotes(updatedVotes);
+  }
+
   const getRandomAnecdote = () => {
-    return Math.floor(Math.random() * anecdotes.length);
+    return Math.floor(Math.random() * anecdotes.length)
   }
 
   return (
     <div>
-      {props.anecdotes[selected]}<br />
-      <button onClick={nextAnecdote}>next anecdote</button>
+      <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
+      <Button onClick={voteAnecdote} text="vote" />
+      <Button onClick={nextAnecdote} text="next anecdote" />
     </div>
   )
 }
