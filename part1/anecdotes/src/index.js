@@ -4,9 +4,24 @@ import ReactDOM from 'react-dom'
 const App = (props) => {
   const [selected, setSelected] = useState(0)
 
+  const nextAnecdote = () => {
+    let next = getRandomAnecdote();
+    // sometimes random number is same as previous
+    // to avoid duplication get a random number again
+    while(next === selected) {
+      next = getRandomAnecdote();
+    }
+    setSelected(next);
+  }
+
+  const getRandomAnecdote = () => {
+    return Math.floor(Math.random() * anecdotes.length);
+  }
+
   return (
     <div>
-      {props.anecdotes[selected]}
+      {props.anecdotes[selected]}<br />
+      <button onClick={nextAnecdote}>next anecdote</button>
     </div>
   )
 }
