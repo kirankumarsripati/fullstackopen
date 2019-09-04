@@ -19,6 +19,7 @@ const Anecdote = ({text, votes}) => {
 const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
+  const [maxVoted, setMaxVoted] = useState(0)
 
   const nextAnecdote = () => {
     let next = getRandomAnecdote();
@@ -31,9 +32,18 @@ const App = ({ anecdotes }) => {
   }
 
   const voteAnecdote = () => {
-    const updatedVotes = [...votes];
+    const updatedVotes = [...votes]
     updatedVotes[selected]++;
     setVotes(updatedVotes);
+
+    // votes variable is one step behind
+    // so passing updatedVotes
+    updateMaxVoted(updatedVotes)
+  }
+
+  const updateMaxVoted = (updatedVotes) => {
+    const max = Math.max(...updatedVotes)
+    setMaxVoted(updatedVotes.indexOf(max))
   }
 
   const getRandomAnecdote = () => {
@@ -42,9 +52,12 @@ const App = ({ anecdotes }) => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <Anecdote text={anecdotes[selected]} votes={votes[selected]} />
       <Button onClick={voteAnecdote} text="vote" />
       <Button onClick={nextAnecdote} text="next anecdote" />
+      <h1>Anecdote with most votes</h1>
+      <Anecdote text={anecdotes[maxVoted]} votes={votes[maxVoted]} />
     </div>
   )
 }
