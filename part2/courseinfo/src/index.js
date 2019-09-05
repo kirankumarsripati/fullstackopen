@@ -1,33 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Header = (props) => {
-  return (
-    <h1>{props.course}</h1>
-  )
-}
-
-const Part = (props) => {
-  return (
-    <p>
-      {props.name} {props.exercises}
-    </p>
-  )
-}
-
-const Content = (props) => {
+const Course = ({ course }) => {
   return (
     <div>
-      <Part name={props.parts[0].name} exercises={props.parts[0].exercises} />
-      <Part name={props.parts[1].name} exercises={props.parts[1].exercises} />
-      <Part name={props.parts[2].name} exercises={props.parts[2].exercises} />
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
     </div>
   )
 }
 
-const Total = (props) => {
+const Header = ({ course }) => {
   return (
-    <p>Number of exercises {props.parts.reduce( (p, c) => p + c.exercises, 0)}</p>
+    <h1>{course}</h1>
+  )
+}
+
+const Part = ({ part }) => {
+  return (
+    <p>{part.name} {part.exercises}</p>
+  )
+}
+
+const Content = ({ parts }) => {
+  const getParts = () =>
+    parts.map(part => <Part key={part.id} part={part} />)
+
+  return (
+    <div>
+      {getParts()}
+    </div>
+  )
+}
+
+const Total = ({ parts }) => {
+  return (
+    <p>Number of exercises {parts.reduce( (p, c) => p + c.exercises, 0)}</p>
   )
 }
 
@@ -37,23 +46,25 @@ const App = () => {
     parts: [
       {
         name: 'Fundamentals of React',
-        exercises: 10
+        exercises: 10,
+        id: 1
       },
       {
         name: 'Using props to pass data',
-        exercises: 7
+        exercises: 7,
+        id: 2
       },
       {
         name: 'State of a component',
-        exercises: 14
+        exercises: 14,
+        id: 3
       }
     ]
   }
+
   return (
     <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
+      <Course course={course} />
     </div>
   )
 }
