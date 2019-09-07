@@ -33,6 +33,10 @@ const App = () => {
         setPersons(persons.filter(p => p.id !== id))
         showMessage(`Deleted ${name}`, 'success')
       })
+      .catch(() => {
+        setPersons(persons.filter(p => p.id !== id))
+        showMessage(`Information of ${name} has already been removed from server`, 'error')
+      })
   }
 
   const addPerson = event => {
@@ -52,6 +56,12 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
+          .catch(() => {
+            setPersons(persons.filter(p => p.id !== person.id))
+            showMessage(`Updating person ${person.name} has failed because it is deleted already`, 'error')
+            setNewName('')
+            setNewNumber('')
+          })
       }
       return
     }
@@ -68,6 +78,9 @@ const App = () => {
         showMessage(`Added ${returnedPerson.name}`, 'success')
         setNewName('')
         setNewNumber('')
+      })
+      .catch(() => {
+        showMessage(`Adding person ${person.name} has failed, please try again later`, 'error')
       })
   }
 
