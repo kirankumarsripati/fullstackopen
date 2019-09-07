@@ -20,8 +20,16 @@ const App = () => {
   }
 
   const handleFilterChange = event => {
-    const str = event.target.value;
+    const str = event.target.value
     setFilter(str)
+  }
+
+  const handleDeletePerson = ({id}) => {
+    personService
+      .remove(id)
+      .then(() => {
+        setPersons(persons.filter(p => p.id !== id))
+      })
   }
 
   const addPerson = event => {
@@ -65,9 +73,14 @@ const App = () => {
         name={newName}
         nameChange={handleNameChange}
         number={newNumber}
-        numberChange={handleNumberChange} />
+        numberChange={handleNumberChange}
+      />
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons
+        persons={persons}
+        filter={filter}
+        deletePerson={handleDeletePerson}
+      />
     </div>
   )
 }
