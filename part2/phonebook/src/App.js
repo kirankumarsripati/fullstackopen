@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axio from 'axios'
+import axios from 'axios'
 
 import Filter from './components/Filter'
 import Persons from './components/Persons'
@@ -41,7 +41,7 @@ const App = () => {
   }
 
   const hook = () => {
-    axio
+    axios
       .get('http://localhost:3001/persons')
       .then(response => {
         setPersons(response.data)
