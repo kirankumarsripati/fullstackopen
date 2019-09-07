@@ -12,6 +12,10 @@ const App = () => {
     setFilter(str)
   }
 
+  const handleCountryClick = data => {
+    setFilter(data.name)
+  }
+
   const getCountries = () => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
@@ -25,7 +29,7 @@ const App = () => {
   return (
     <div>
       <Filter filter={filter} onChange={handleFilterChange} />
-      <Countries data={countries} filter={filter} />
+      <Countries data={countries} filter={filter} countryClick={handleCountryClick} />
     </div>
   )
 }
