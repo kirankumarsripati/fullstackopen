@@ -1,4 +1,5 @@
 import React from 'react'
+import Weather from './Weather'
 
 const Country = ({data, onClick = null, closed = false}) => {
   const handleClick = (country) => () => onClick(country);
@@ -15,9 +16,10 @@ const Country = ({data, onClick = null, closed = false}) => {
       population {data.population}</p>
       <h2>languages</h2>
       <ul>
-        {data.languages.map(l => <li>{l.name}</li>)}
+        {data.languages.map(l => <li key={l.iso639_2}>{l.name}</li>)}
       </ul>
       <img width="100" src={data.flag} alt={data.name} />
+      <Weather country={data} />
     </div>
   )
 }
