@@ -4,12 +4,14 @@ import Filter from './components/Filter'
 import Persons from './components/Persons'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ filter, setFilter ] = useState('')
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ message, setMessage ] = useState(null)
 
   const handleNameChange = event => {
     setNewName(event.target.value)
@@ -24,11 +26,12 @@ const App = () => {
     setFilter(str)
   }
 
-  const handleDeletePerson = ({id}) => {
+  const handleDeletePerson = ({id, name}) => {
     personService
       .remove(id)
       .then(() => {
         setPersons(persons.filter(p => p.id !== id))
+        showMessage(`Deleted ${name}`, 'success')
       })
   }
 
@@ -45,6 +48,7 @@ const App = () => {
           .update(person.id, person)
           .then(returnedPerson => {
             setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
+            showMessage(`Updated ${returnedPerson.name}`, 'success')
             setNewName('')
             setNewNumber('')
           })
@@ -61,9 +65,17 @@ const App = () => {
       .create(person)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        showMessage(`Added ${returnedPerson.name}`, 'success')
         setNewName('')
         setNewNumber('')
       })
+  }
+
+  const showMessage = (message, type) => {
+    setMessage({value: message, type})
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   const hook = () => {
@@ -79,6 +91,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter filter={filter} onChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm
