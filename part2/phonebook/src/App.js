@@ -79,8 +79,8 @@ const App = () => {
         setNewName('')
         setNewNumber('')
       })
-      .catch(() => {
-        showMessage(`Adding person ${person.name} has failed, please try again later`, 'error')
+      .catch(error => {
+        showMessage(error.response.data.error, 'error')
       })
   }
 
