@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "watch": "nodemon index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --verbose"
   },
   "keywords": [
     "blog",
@@ -23,9 +24,11 @@
     "mongoose": "^5.7.1"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.18",
     "eslint": "^6.4.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0",
     "nodemon": "^1.19.2"
   }
 }
