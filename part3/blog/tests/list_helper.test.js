@@ -81,3 +81,15 @@ describe('favorite blog', () => {
     expect(result).toEqual(favorite)
   })
 })
+
+describe('most blogs', () => {
+  test('should return author with most blogs', () => {
+    const mostBlogged = {
+      author: 'Brynna Bellelli',
+      blogs: 2,
+    }
+
+    const result = listHelper.mostBlogs(listWithMultipleBlogs)
+    expect(result).toEqual(mostBlogged)
+  })
+})
