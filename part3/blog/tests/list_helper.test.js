@@ -93,3 +93,15 @@ describe('most blogs', () => {
     expect(result).toEqual(mostBlogged)
   })
 })
+
+describe('most likes', () => {
+  test('should return author with most likes', () => {
+    const mostLiked = {
+      author: 'Roxane Spears',
+      likes: 84,
+    }
+
+    const result = listHelper.mostLikes(listWithMultipleBlogs)
+    expect(result).toEqual(mostLiked)
+  })
+})
