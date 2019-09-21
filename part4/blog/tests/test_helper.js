@@ -18,12 +18,14 @@ const initialBlogs = [
   {
     title: 'Doing engineering in distance learning and fullstackopen along with job is very difficult!',
     author: 'Kirankumar Sripati',
+    url: 'https://kirankumarsripati.appspot.com/blog/',
     likes: 76,
     id: '6d7e2005d16ed0661c537844',
   },
   {
     title: 'After working for 10 years in HTML/CSS, learning JavaScript is really challenging',
     author: 'Dharam Dhoke',
+    url: 'https://dharamsuxworld.com',
     likes: 27,
     id: '5d7e2005d16ed0661c537843',
   },

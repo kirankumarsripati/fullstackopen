@@ -41,6 +41,7 @@ test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'Should you buy One Plus?',
     author: 'Ruth Irlekar',
+    url: 'https://psychx86.com/ruthsworld/',
     likes: 121,
   }
 
@@ -76,6 +77,28 @@ test('likes should be default to zero if not provided', async () => {
       url: 'https://sbs.com',
       likes: 0,
     })
+})
+
+test('blog save should give error if title or url missing', async () => {
+  const blogWithoutTitle = {
+    author: 'Swami Bhairi',
+    url: 'https://sbs.com',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutTitle)
+    .expect(400)
+
+  const blogWithoutUrl = {
+    title: 'A blog without title',
+    author: 'Swami Bhairi',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(blogWithoutUrl)
+    .expect(400)
 })
 
 afterAll(() => {
