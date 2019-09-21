@@ -87,6 +87,27 @@ test('a valid blog can be added', async () => {
   expect(titles).toContain('Should you buy One Plus?')
 })
 
+test('likes should be default to zero if not provided', async () => {
+  const newBlog = {
+    title: 'A blog without likes',
+    author: 'Swami Bhairi',
+    url: 'https://sbs.com',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect((res) => {
+      delete res.body.id
+    })
+    .expect(201, {
+      title: 'A blog without likes',
+      author: 'Swami Bhairi',
+      url: 'https://sbs.com',
+      likes: 0,
+    })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
