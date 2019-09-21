@@ -65,6 +65,28 @@ test('blog id should be defined', async () => {
   })
 })
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Should you buy One Plus?',
+    author: 'Ruth Irlekar',
+    likes: 121,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const titles = response.body.map((blog) => blog.title)
+
+  expect(response.body.length).toBe(initialBlogs.length + 1)
+
+  expect(titles).toContain('Should you buy One Plus?')
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
