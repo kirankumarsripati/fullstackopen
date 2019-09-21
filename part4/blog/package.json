@@ -4,10 +4,10 @@
   "description": "This block is part of fullstackopen 2019",
   "main": "index.js",
   "scripts": {
-    "start": "cross-dev NODE_ENV=production node index.js",
-    "watch": "cross-dev NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
-    "test": "cross-dev NODE_ENV=test jest --verbose --runInBand"
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "keywords": [
     "blog",
