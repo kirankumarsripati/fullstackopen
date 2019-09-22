@@ -11,6 +11,22 @@ usersRouter.post('/', async (request, response, next) => {
   try {
     const { body } = request
 
+    // password is mandatory
+    if (!body.password) {
+      response
+        .status(400)
+        .json({ error: '`password` is required' })
+      return
+    }
+
+    // password should be minimum of 8 characters
+    if (body.password.length < 8) {
+      response
+        .status(400)
+        .json({ error: '`password` must be minimum of 8 characters' })
+      return
+    }
+
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
@@ -22,7 +38,7 @@ usersRouter.post('/', async (request, response, next) => {
 
     const savedUser = await user.save()
 
-    response.json(savedUser)
+    response.status(201).json(savedUser)
   } catch (exception) {
     next(exception)
   }
