@@ -16,24 +16,66 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+describe('when there is inititially some blogs saved', () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
 
-test('there are four blogs', async () => {
-  const response = await api.get('/api/blogs')
+  test('all blogs are returned', async () => {
+    const response = await api.get('/api/blogs')
 
-  expect(response.body.length).toBe(helper.initialBlogs.length)
-})
+    expect(response.body.length).toBe(helper.initialBlogs.length)
+  })
 
-test('blog id should be defined', async () => {
-  const response = await api.get('/api/blogs')
+  test('blog id should be defined', async () => {
+    const response = await api.get('/api/blogs')
 
-  response.body.forEach((blog) => {
-    expect(blog.id).toBeDefined()
+    response.body.forEach((blog) => {
+      expect(blog.id).toBeDefined()
+    })
+  })
+
+  test('a specific blog is within the returned blogs', async () => {
+    const response = await api.get('/api/blogs')
+
+    const contents = response.body.map((b) => b.title)
+    expect(contents).toContain('my first blog')
+  })
+
+  describe('viewing a specific blog', () => {
+    test('succeeds with a valid id', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+
+      const blogToView = blogsAtStart[0]
+
+      const resultBlog = await api
+        .get(`/api/blogs/${blogToView.id}`)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+
+      expect(resultBlog.body).toEqual(blogToView)
+    })
+
+    test('fails with statuscode 404 if blog does not exist', async () => {
+      const validNoneExistingId = await helper.nonExistingId()
+
+      console.log(validNoneExistingId)
+
+      await api
+        .get(`/api/blogs/${validNoneExistingId}`)
+        .expect(404)
+    })
+
+    test('fails with statuscode 400 id is invalid', async () => {
+      const invalidId = '5d871fb536462e45b8b25a'
+
+      await api
+        .get(`/api/blogs/${invalidId}`)
+        .expect(400)
+    })
   })
 })
 

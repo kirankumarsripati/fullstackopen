@@ -36,7 +36,22 @@ const blogsInDb = async () => {
   return blogs.map((blog) => blog.toJSON())
 }
 
+const nonExistingId = async () => {
+  const blog = new Blog({
+    title: 'my second blog',
+    author: 'Kirankumar Sripati',
+    url: 'https://kirankumarsripati.appspot.com',
+    likes: 26,
+  })
+
+  await blog.save()
+  await blog.remove()
+
+  return blog._id.toString()
+}
+
 module.exports = {
   initialBlogs,
   blogsInDb,
+  nonExistingId,
 }
