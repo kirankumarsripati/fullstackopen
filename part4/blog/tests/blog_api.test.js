@@ -162,6 +162,56 @@ describe('when there is inititially some blogs saved', () => {
       expect(titles).not.toContain(blogToDelete.title)
     })
   })
+
+  describe('update a blog', () => {
+    test('should update likes + 1', async () => {
+      const blogsInDb = await helper.blogsInDb()
+
+      const blogToUpdate = blogsInDb[0]
+
+      const updatedBlog = {
+        ...blogToUpdate,
+        likes: blogToUpdate.likes + 1,
+      }
+
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send({
+          likes: blogToUpdate.likes + 1,
+        })
+        .expect(200, updatedBlog)
+
+      await api
+        .get(`/api/blogs/${blogToUpdate.id}`)
+        .expect(200, updatedBlog)
+    })
+
+    test('should update title, link and author', async () => {
+      const blogsInDb = await helper.blogsInDb()
+
+      const blogToUpdate = blogsInDb[0]
+
+      const updatedBlog = {
+        ...blogToUpdate,
+        author: 'New Author',
+        title: 'Updated Blog',
+        url: 'https://example.blog',
+      }
+
+      await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send({
+          author: 'New Author',
+          title: 'Updated Blog',
+          url: 'https://example.blog',
+        })
+        .expect(200, updatedBlog)
+
+      await api
+        .get(`/api/blogs/${blogToUpdate.id}`)
+        .expect(200, updatedBlog)
+    })
+  })
 })
 
 afterAll(() => {
