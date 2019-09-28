@@ -7,15 +7,28 @@ const User = require('../models/user')
 
 const api = supertest(app)
 
+let loggedInToken = ''
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   await User.deleteMany({})
 
+  console.log('clearing users')
+
   const blogObjects = helper.initialBlogs
     .map((blog) => new Blog(blog))
 
-  const user = new User({ username: 'root', password: 'secret' })
+  const user = new User({ username: 'root', name: 'Admin', passwordHash: '$2b$10$kvVcNpLUksRbwO8kl9sOxOHpwzN5pmYcD7UUhi0tYaHnjLjK0dTWO' })
   await user.save()
+
+  const auth = await api
+    .post('/api/login')
+    .send({
+      username: 'root',
+      password: 'secret123',
+    })
+
+  loggedInToken = `Bearer ${auth.body.token}`
 
   const promiseArray = blogObjects
     .map((blog) => blog.save())
@@ -98,6 +111,7 @@ describe('when there is inititially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set({ Authorization: loggedInToken })
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -122,6 +136,7 @@ describe('when there is inititially some blogs saved', () => {
       await api
         .post('/api/blogs')
         .send(newBlog)
+        .set({ Authorization: loggedInToken })
         .expect((res) => {
           delete res.body.id
         })
@@ -142,6 +157,7 @@ describe('when there is inititially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set({ Authorization: loggedInToken })
         .send(blogWithoutTitle)
         .expect(400)
 
@@ -152,6 +168,7 @@ describe('when there is inititially some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set({ Authorization: loggedInToken })
         .send(blogWithoutUrl)
         .expect(400)
     })
