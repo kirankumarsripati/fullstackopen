@@ -13,13 +13,14 @@ beforeEach(async () => {
   await Blog.deleteMany({})
   await User.deleteMany({})
 
-  console.log('clearing users')
-
-  const blogObjects = helper.initialBlogs
-    .map((blog) => new Blog(blog))
-
   const user = new User({ username: 'root', name: 'Admin', passwordHash: '$2b$10$kvVcNpLUksRbwO8kl9sOxOHpwzN5pmYcD7UUhi0tYaHnjLjK0dTWO' })
   await user.save()
+
+  const blogObjects = helper.initialBlogs
+    .map((blog) => {
+      blog.user = user._id
+      return new Blog(blog)
+    })
 
   const auth = await api
     .post('/api/login')
@@ -75,7 +76,7 @@ describe('when there is inititially some blogs saved', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/)
 
-      expect(resultBlog.body).toEqual(blogToView)
+      expect(resultBlog.body.title).toEqual(blogToView.title)
     })
 
     test('fails with statuscode 404 if blog does not exist', async () => {
@@ -181,6 +182,7 @@ describe('when there is inititially some blogs saved', () => {
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set({ Authorization: loggedInToken })
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
@@ -199,47 +201,47 @@ describe('when there is inititially some blogs saved', () => {
 
       const blogToUpdate = blogsInDb[0]
 
-      const updatedBlog = {
-        ...blogToUpdate,
-        likes: blogToUpdate.likes + 1,
-      }
-
-      await api
+      const updatedBlog = await api
         .put(`/api/blogs/${blogToUpdate.id}`)
         .send({
           likes: blogToUpdate.likes + 1,
         })
-        .expect(200, updatedBlog)
+        .expect(200)
 
-      await api
+      expect(updatedBlog.body.likes).toBe(blogToUpdate.likes + 1)
+
+      const updatedBlog2 = await api
         .get(`/api/blogs/${blogToUpdate.id}`)
-        .expect(200, updatedBlog)
+        .expect(200)
+      expect(updatedBlog2.body.likes).toBe(blogToUpdate.likes + 1)
     })
 
     test('should update title, link and author', async () => {
       const blogsInDb = await helper.blogsInDb()
 
       const blogToUpdate = blogsInDb[0]
-
-      const updatedBlog = {
-        ...blogToUpdate,
+      const valuesToUpdate = {
         author: 'New Author',
         title: 'Updated Blog',
         url: 'https://example.blog',
       }
 
-      await api
+      const updatedBlog = await api
         .put(`/api/blogs/${blogToUpdate.id}`)
-        .send({
-          author: 'New Author',
-          title: 'Updated Blog',
-          url: 'https://example.blog',
-        })
-        .expect(200, updatedBlog)
+        .send(valuesToUpdate)
+        .expect(200)
 
-      await api
+      expect(updatedBlog.body.author).toBe(valuesToUpdate.author)
+      expect(updatedBlog.body.title).toBe(valuesToUpdate.title)
+      expect(updatedBlog.body.url).toBe(valuesToUpdate.url)
+
+      const updatedBlog2 = await api
         .get(`/api/blogs/${blogToUpdate.id}`)
-        .expect(200, updatedBlog)
+        .expect(200)
+
+      expect(updatedBlog2.body.author).toBe(valuesToUpdate.author)
+      expect(updatedBlog2.body.title).toBe(valuesToUpdate.title)
+      expect(updatedBlog2.body.url).toBe(valuesToUpdate.url)
     })
   })
 })
