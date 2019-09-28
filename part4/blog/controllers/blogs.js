@@ -23,18 +23,18 @@ blogsRouter.get('/:id', async (request, response, next) => {
 })
 
 blogsRouter.post('/', async (request, response, next) => {
-  if (!request.body.userId) {
+  if (!request.body.user) {
     return response
       .status(400)
-      .json({ error: 'userId is required' })
+      .json({ error: 'user is required' })
   }
 
-  const user = await User.findById(request.body.userId)
+  const user = await User.findById(request.body.user)
 
   if (!user) {
     return response
       .status(400)
-      .json({ error: 'userId not found' })
+      .json({ error: 'user not found' })
   }
 
   const blog = new Blog({

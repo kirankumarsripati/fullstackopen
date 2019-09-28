@@ -6,5 +6,5 @@ content-type: application/json
   "author": "Kirankumar Sripati",
   "url": "https://example.com/blog/1",
   "likes": 10,
-  "userId": "5d87a78dd8acbe116b28261a"
+  "user": "5d87a78dd8acbe116b28261a"
 }

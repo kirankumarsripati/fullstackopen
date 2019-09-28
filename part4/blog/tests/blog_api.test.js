@@ -3,14 +3,20 @@ const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
 
   const blogObjects = helper.initialBlogs
     .map((blog) => new Blog(blog))
+
+  const user = new User({ username: 'root', password: 'secret' })
+  await user.save()
+
   const promiseArray = blogObjects
     .map((blog) => blog.save())
   await Promise.all(promiseArray)
@@ -80,11 +86,14 @@ describe('when there is inititially some blogs saved', () => {
 
   describe('addition of a new blog', () => {
     test('succeeds with a valid data', async () => {
+      const users = await helper.usersInDb()
+
       const newBlog = {
         title: 'Should you buy One Plus?',
         author: 'Ruth Irlekar',
         url: 'https://psychx86.com/ruthsworld/',
         likes: 121,
+        user: users[0].id,
       }
 
       await api
@@ -101,10 +110,13 @@ describe('when there is inititially some blogs saved', () => {
     })
 
     test('likes should be default to zero if not provided', async () => {
+      const users = await helper.usersInDb()
+
       const newBlog = {
         title: 'A blog without likes',
         author: 'Swami Bhairi',
         url: 'https://sbs.com',
+        user: users[0].id,
       }
 
       await api
@@ -118,6 +130,7 @@ describe('when there is inititially some blogs saved', () => {
           author: 'Swami Bhairi',
           url: 'https://sbs.com',
           likes: 0,
+          user: users[0].id,
         })
     })
 
