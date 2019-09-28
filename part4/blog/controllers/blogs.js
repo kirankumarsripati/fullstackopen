@@ -52,6 +52,7 @@ blogsRouter.post('/', async (request, response, next) => {
   } catch (exception) {
     next(exception)
   }
+  return response
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
