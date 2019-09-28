@@ -5,5 +5,6 @@ content-type: application/json
   "title": "my first blog",
   "author": "Kirankumar Sripati",
   "url": "https://example.com/blog/1",
-  "likes": 10
+  "likes": 10,
+  "userId": "5d87a78dd8acbe116b28261a"
 }
