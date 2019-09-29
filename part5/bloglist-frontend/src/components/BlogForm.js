@@ -1,7 +1,7 @@
 import React from 'react'
 
 const BlogForm = ({
-  handleCreate, title, setTitle, author, setAuthor, url, setUrl,
+  handleCreate, title, handleTitleChange, author, handleAuthorChange, url, handleUrlChange,
 }) => (
   <div>
     <h2>create new</h2>
@@ -12,7 +12,7 @@ const BlogForm = ({
           type="text"
           value={title}
           name="title"
-          onChange={(({ target }) => setTitle(target.value))}
+          onChange={handleTitleChange}
         />
       </div>
       <div>
@@ -21,7 +21,7 @@ const BlogForm = ({
           type="text"
           value={author}
           name="author"
-          onChange={({ target }) => setAuthor(target.value)}
+          onChange={handleAuthorChange}
         />
       </div>
       <div>
@@ -30,7 +30,7 @@ const BlogForm = ({
           type="text"
           value={url}
           name="url"
-          onChange={({ target }) => setUrl(target.value)}
+          onChange={handleUrlChange}
         />
       </div>
       <button type="submit">create</button>

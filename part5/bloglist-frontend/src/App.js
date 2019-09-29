@@ -13,10 +13,15 @@ const App = () => {
   const [blogMessage, setBlogMessage] = useState(null)
   const [user, setUser] = useState(null)
 
+
   // create new blog
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [createBlogVisible, setCreateBlogVisible] = useState(false)
+
+  const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
+  const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
 
   useEffect(() => {
     blogService
@@ -90,9 +95,9 @@ const App = () => {
             <LoginForm
               handleLogin={handleLogin}
               username={username}
+              handleUsernameChange={({ target }) => setUsername(target.value)}
               password={password}
-              setUsername={setUsername}
-              setPassword={setPassword}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
             />
           </div>
         )
@@ -105,15 +110,21 @@ const App = () => {
               logged in
             </p>
             <button type="button" onClick={handleLogout}>Logout</button>
-            <BlogForm
-              handleCreate={handleCreate}
-              title={title}
-              setTitle={setTitle}
-              author={author}
-              setAuthor={setAuthor}
-              url={url}
-              setUrl={setUrl}
-            />
+            <div style={hideWhenVisible}>
+              <button onClick={() => setCreateBlogVisible(true)}>add bote</button>
+            </div>
+            <div style={showWhenVisible}>
+              <BlogForm
+                handleCreate={handleCreate}
+                title={title}
+                handleTitleChange={(({ target }) => setTitle(target.value))}
+                author={author}
+                handleAuthorChange={({ target }) => setAuthor(target.value)}
+                url={url}
+                handleUrlChange={({ target }) => setUrl(target.value)}
+              />
+              <button onClick={() => setCreateBlogVisible(false)}>cancel</button>
+            </div>
             <h2>blogs</h2>
             { blogs.map((blog) => <Blog key={blog.id} blog={blog} />) }
           </div>
