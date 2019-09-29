@@ -27,7 +27,7 @@ const App = () => {
     blogService
       .getAll()
       .then((initialBlogs) => {
-        setBlogs(initialBlogs)
+        setBlogs(initialBlogs.sort((a, b) => (a.likes - b.likes)).reverse())
       })
   }, [])
 
