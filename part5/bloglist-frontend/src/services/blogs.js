@@ -33,4 +33,10 @@ const update = async (blogId, newObj) => {
   return response.data
 }
 
-export default { setToken, getAll, create, update }
+const remove = (blogId) => {
+  const config = getHeaders()
+  const response = axios.delete(`${baseUrl}/${blogId}`, config)
+  return response.data
+}
+
+export default { setToken, getAll, create, update, remove }

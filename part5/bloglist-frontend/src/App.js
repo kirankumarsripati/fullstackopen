@@ -106,6 +106,18 @@ const App = () => {
     }, 5000)
   }
 
+  const handleDelete = (blog) => async (event) => {
+    event.preventDefault()
+    await blogService.remove(blog.id)
+
+    setBlogs(blogs.filter(b => b.id !== blog.id))
+
+    setBlogMessage(`blog ${blog.title} by ${blog.author} deleted!`)
+    setTimeout(() => {
+      setBlogMessage(null)
+    }, 5000)
+  }
+
   return (
     <div>
       { user === null
@@ -151,6 +163,7 @@ const App = () => {
               key={blog.id}
               blog={blog}
               handleLike={handleLike(blog)}
+              handleDelete={handleDelete(blog)}
             />) }
           </div>
         )}

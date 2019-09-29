@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleDelete }) => {
   const [expanded, setExpanded] = useState(false)
 
   const blogStyle = {
@@ -15,6 +15,14 @@ const Blog = ({ blog, handleLike }) => {
     setExpanded(!expanded)
   }
 
+  const confirmDelete = (event) => {
+    if (window.confirm(`remove blog ${blog.title} by ${blog.author}`)) {
+      handleDelete(event)
+    } else {
+      console.log('User not confirmed, so not deleting')
+    }
+  }
+
   return (
     <div style={blogStyle}>
       { expanded
@@ -22,8 +30,9 @@ const Blog = ({ blog, handleLike }) => {
         <div>
           <div onClick={toggleExpand}>{blog.title} {blog.author}</div>
           <a href={blog.url}>{blog.url}</a> <br />
-          {blog.likes} <button onClick={handleLike}>like</button> <br />
-          added by {blog.user.name}
+          {blog.likes} <button type="button" onClick={handleLike}>like</button> <br />
+          added by {blog.user.name} <br />
+          <button type="button" onClick={confirmDelete}>remove</button>
         </div>
       )
       : (
