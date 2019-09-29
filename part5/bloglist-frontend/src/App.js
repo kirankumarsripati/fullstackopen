@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -14,7 +14,7 @@ const App = () => {
       <h1>login to application</h1>
       <div>
         username
-          <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -23,7 +23,7 @@ const App = () => {
       </div>
       <div>
         password
-          <input
+        <input
           type="password"
           value={password}
           name="Password"
@@ -32,7 +32,7 @@ const App = () => {
       </div>
       <button type="submit">login</button>
     </form>
-  );
+  )
 }
 
-export default App;
+export default App
