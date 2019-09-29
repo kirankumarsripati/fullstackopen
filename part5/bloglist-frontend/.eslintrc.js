@@ -30,5 +30,11 @@ module.exports = {
     ],
     'no-underscore-dangle': 0,
     'react/jsx-filename-extension': 0,
+    // There is no problem with Linux or Mac, but Windows giving 'LF' 'CRLF' error
+    'linebreak-style': 0,
+    'react/forbid-prop-types': 0,
+    'no-alert': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
   },
 };
