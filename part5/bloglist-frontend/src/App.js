@@ -164,7 +164,8 @@ const App = () => {
               blog={blog}
               handleLike={handleLike(blog)}
               handleDelete={handleDelete(blog)}
-            />) }
+              username={user.username}
+              />) }
           </div>
         )}
     </div>
