@@ -10,6 +10,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [blogMessage, setBlogMessage] = useState(null)
   const [user, setUser] = useState(null)
 
   // create new blog
@@ -49,7 +50,7 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -72,40 +73,51 @@ const App = () => {
     setTitle('')
     setAuthor('')
     setUrl('')
-  }
 
-  if (user === null) {
-    return (
-      <div>
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-        />
-      </div>
-    )
+    setBlogMessage(`a new blog ${blog.title} by ${blog.author} added`)
+    setTimeout(() => {
+      setBlogMessage(null)
+    }, 5000)
   }
 
   return (
     <div>
-      <p>
-        {user.name}
-        logged in
-      </p>
-      <button type="button" onClick={handleLogout}>Logout</button>
-      <BlogForm
-        handleCreate={handleCreate}
-        title={title}
-        setTitle={setTitle}
-        author={author}
-        setAuthor={setAuthor}
-        url={url}
-        setUrl={setUrl}
-      />
-      <h2>blogs</h2>
-      { blogs.map((blog) => <Blog key={blog.id} blog={blog} />) }
+      { user === null
+        ? (
+          <div>
+            <h2>login to application</h2>
+            {errorMessage && <div className="error">{errorMessage}</div>}
+            <LoginForm
+              handleLogin={handleLogin}
+              username={username}
+              password={password}
+              setUsername={setUsername}
+              setPassword={setPassword}
+            />
+          </div>
+        )
+        : (
+          <div>
+            <h2>blogs</h2>
+            {blogMessage && <div className="success">{blogMessage}</div>}
+            <p>
+              {user.name}
+              logged in
+            </p>
+            <button type="button" onClick={handleLogout}>Logout</button>
+            <BlogForm
+              handleCreate={handleCreate}
+              title={title}
+              setTitle={setTitle}
+              author={author}
+              setAuthor={setAuthor}
+              url={url}
+              setUrl={setUrl}
+            />
+            <h2>blogs</h2>
+            { blogs.map((blog) => <Blog key={blog.id} blog={blog} />) }
+          </div>
+        )}
     </div>
   )
 }
