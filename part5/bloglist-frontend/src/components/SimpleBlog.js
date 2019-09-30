@@ -11,7 +11,7 @@ const SimpleBlog = ({ blog, onClick }) => (
       blog has
       {blog.likes}
       likes
-      <button type="button" onClick={onClick}>like</button>
+      <button className="like-button" type="button" onClick={onClick}>like</button>
     </div>
   </div>
 )
