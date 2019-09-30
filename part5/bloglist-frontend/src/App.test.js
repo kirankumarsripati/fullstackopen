@@ -23,4 +23,29 @@ describe('<App />', () => {
     const blogs = component.container.querySelectorAll('.blog')
     expect(blogs.length).toBe(0)
   })
+
+  test('after login, show blogs', async () => {
+    const user = {
+      username: 'tester',
+      token: '1231231214',
+      name: 'Donald Tester'
+    }
+
+    localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+
+    const component = render(
+      <App />
+    )
+    component.rerender(<App />)
+
+    await waitForElement(
+      () => component.container.querySelector('.blog'),
+    )
+
+    const blogs = component.container.querySelectorAll('.blog')
+    expect(blogs.length).toBe(3)
+    expect(component.container).toHaveTextContent('this is my blog in windows')
+    expect(component.container).toHaveTextContent('test new note')
+    expect(component.container).toHaveTextContent('post by dear 2')
+  })
 })

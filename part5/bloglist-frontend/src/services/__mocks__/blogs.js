@@ -1,3 +1,5 @@
+let token = null
+
 const blogs = [
   {
     likes: 6,
@@ -37,10 +39,15 @@ const blogs = [
   },
 ]
 
+const setToken = (newToken) => {
+  token = `bearer ${newToken}`
+}
+
 const getAll = () => {
   return Promise.resolve(blogs)
 }
 
 export default {
   getAll,
+  setToken,
 }
