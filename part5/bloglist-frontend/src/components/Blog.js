@@ -34,7 +34,7 @@ const Blog = ({
       { expanded
         ? (
           <div>
-            <div onClick={toggleExpand}>
+            <div onClick={toggleExpand} className="blog">
               {blog.title}
               {blog.author}
             </div>
@@ -50,7 +50,7 @@ const Blog = ({
           </div>
         )
         : (
-          <div onClick={toggleExpand}>
+          <div onClick={toggleExpand} className="blog">
             {blog.title}
             {' '}
             {blog.author}
