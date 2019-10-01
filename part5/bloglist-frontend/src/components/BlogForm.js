@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const BlogForm = ({
-  handleCreate, title, handleTitleChange, author, handleAuthorChange, url, handleUrlChange,
+  handleCreate, title, author, url,
 }) => (
   <div>
     <h2>create new</h2>
@@ -10,28 +10,22 @@ const BlogForm = ({
       <div>
         title:
         <input
-          type="text"
-          value={title}
+          {...title}
           name="title"
-          onChange={handleTitleChange}
         />
       </div>
       <div>
         author:
         <input
-          type="text"
-          value={author}
+          {...author}
           name="author"
-          onChange={handleAuthorChange}
         />
       </div>
       <div>
         url:
         <input
-          type="text"
-          value={url}
+          {...url}
           name="url"
-          onChange={handleUrlChange}
         />
       </div>
       <button type="submit">create</button>
@@ -41,12 +35,9 @@ const BlogForm = ({
 
 BlogForm.propTypes = {
   handleCreate: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  handleTitleChange: PropTypes.func.isRequired,
-  author: PropTypes.string.isRequired,
-  handleAuthorChange: PropTypes.func.isRequired,
-  url: PropTypes.string.isRequired,
-  handleUrlChange: PropTypes.func.isRequired,
+  title: PropTypes.object.isRequired,
+  author: PropTypes.object.isRequired,
+  url: PropTypes.object.isRequired,
 }
 
 export default BlogForm

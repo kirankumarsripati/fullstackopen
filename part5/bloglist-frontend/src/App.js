@@ -4,20 +4,21 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { useField } from './hooks'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
   const [errorMessage, setErrorMessage] = useState(null)
   const [blogMessage, setBlogMessage] = useState(null)
   const [user, setUser] = useState(null)
 
 
   // create new blog
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const [createBlogVisible, setCreateBlogVisible] = useState(false)
 
   const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
@@ -44,16 +45,16 @@ const App = () => {
     event.preventDefault()
     try {
       const userInfo = await loginService.login({
-        username,
-        password,
+        username: username.value,
+        password: password.value,
       })
 
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(userInfo))
       blogService.setToken(userInfo.token)
 
       setUser(userInfo)
-      setUsername('')
-      setPassword('')
+      // setUsername('')
+      // setPassword('')
     } catch (exception) {
       setErrorMessage('wrong username or password')
       setTimeout(() => {
@@ -71,13 +72,17 @@ const App = () => {
 
   const handleCreate = async (event) => {
     event.preventDefault()
-    const blog = { title, author, url }
+    const blog = {
+      title: title.value,
+      author: author.value,
+      url: url.value,
+    }
     const savedBlog = await blogService.create(blog)
 
     setBlogs(blogs.concat(savedBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    // setTitle('')
+    // setAuthor('')
+    // setUrl('')
 
     setBlogMessage(`a new blog ${blog.title} by ${blog.author} added`)
     setTimeout(() => {
@@ -128,9 +133,7 @@ const App = () => {
             <LoginForm
               handleLogin={handleLogin}
               username={username}
-              handleUsernameChange={({ target }) => setUsername(target.value)}
               password={password}
-              handlePasswordChange={({ target }) => setPassword(target.value)}
             />
           </div>
         )
@@ -150,11 +153,8 @@ const App = () => {
               <BlogForm
                 handleCreate={handleCreate}
                 title={title}
-                handleTitleChange={(({ target }) => setTitle(target.value))}
                 author={author}
-                handleAuthorChange={({ target }) => setAuthor(target.value)}
                 url={url}
-                handleUrlChange={({ target }) => setUrl(target.value)}
               />
               <button type="button" onClick={() => setCreateBlogVisible(false)}>cancel</button>
             </div>
