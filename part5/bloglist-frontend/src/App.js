@@ -53,8 +53,8 @@ const App = () => {
       blogService.setToken(userInfo.token)
 
       setUser(userInfo)
-      // setUsername('')
-      // setPassword('')
+      username.reset()
+      password.reset()
     } catch (exception) {
       setErrorMessage('wrong username or password')
       setTimeout(() => {
@@ -80,9 +80,9 @@ const App = () => {
     const savedBlog = await blogService.create(blog)
 
     setBlogs(blogs.concat(savedBlog))
-    // setTitle('')
-    // setAuthor('')
-    // setUrl('')
+    title.reset()
+    author.reset()
+    url.reset()
 
     setBlogMessage(`a new blog ${blog.title} by ${blog.author} added`)
     setTimeout(() => {
