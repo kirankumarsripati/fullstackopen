@@ -5,25 +5,37 @@ const LoginForm = ({
   handleLogin,
   username,
   password,
-}) => (
-  <form onSubmit={handleLogin}>
-    <div>
-      username
-      <input
-        {...username}
-        name="Username"
-      />
-    </div>
-    <div>
-      password
-      <input
-        {...password}
-        name="Password"
-      />
-    </div>
-    <button type="submit">login</button>
-  </form>
-)
+}) => {
+  const localUsername = {
+    ...username,
+    reset: undefined,
+  }
+
+  const localPassword = {
+    ...password,
+    reset: undefined,
+  }
+
+  return (
+    <form onSubmit={handleLogin}>
+      <div>
+        username
+        <input
+          {...localUsername}
+          name="Username"
+        />
+      </div>
+      <div>
+        password
+        <input
+          {...localPassword}
+          name="Password"
+        />
+      </div>
+      <button type="submit">login</button>
+    </form>
+  )
+}
 
 LoginForm.propTypes = {
   handleLogin: PropTypes.func.isRequired,
