@@ -6,9 +6,12 @@ const Notification = ({ store }) => {
     padding: 10,
     borderWidth: 1
   }
+
+  const notification = store.getState().notification
+
   return (
-    <div style={style}>
-      {store.getState().notification}
+    <div hidden={!notification} style={style}>
+      {notification}
     </div>
   )
 }
