@@ -5,7 +5,6 @@ import { setNotification } from './../reducers/notificationReducer'
 
 const AnecdoteList = ({
   anecdotes,
-  filter,
   voteAnecdote,
   setNotification,
  }) => {
@@ -22,7 +21,6 @@ const AnecdoteList = ({
   return (
     <div>
       {anecdotes
-        .filter( a => a.content.toLowerCase().includes(filter.toLowerCase()))
         .map(anecdote =>
           <div key={anecdote.id}>
             <div>
@@ -40,7 +38,11 @@ const AnecdoteList = ({
 
 const mapStateToProps = (state) => {
   return {
-    anecdotes: state.anecdotes,
+    anecdotes: state.anecdotes
+      .filter(
+        anecdote => anecdote.content.toLowerCase()
+          .includes(state.filter.toLowerCase())
+      ),
     filter: state.filter
   }
 }
