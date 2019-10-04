@@ -9,7 +9,7 @@ const AnecdoteList = ({
   setNotification,
  }) => {
   const vote = (anecdote) => {
-    voteAnecdote(anecdote.id)
+    voteAnecdote(anecdote)
 
     setNotification(`you voted '${anecdote.content}'`)
 
