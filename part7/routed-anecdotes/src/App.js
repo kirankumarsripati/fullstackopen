@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
+  withRouter,
 } from 'react-router-dom'
 
 const Menu = () => {
@@ -76,6 +77,9 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+
+    props.history.push('/')
+    props.showMessage(`a new anecdote ${content} created!`, 10)
   }
 
   return (
@@ -101,6 +105,8 @@ const CreateNew = (props) => {
 
 }
 
+const Create = withRouter(CreateNew)
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -120,6 +126,13 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+
+  const showMessage = (message, time = 10) => {
+    setNotification(message)
+    setTimeout(() => {
+      setNotification(null)
+    }, time * 1000)
+  }
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
@@ -148,7 +161,9 @@ const App = () => {
           <Menu />
           <Route exact path="/" render={() => <AnecdoteList anecdotes={anecdotes} />} />
           <Route exact path="/about" render={() => <About />} />
-          <Route exact path="/create" render={() => <CreateNew addNew={addNew} />} />
+          <Route exact path="/create" render={() =>
+            <Create addNew={addNew} showMessage={showMessage} />
+          } />
           <Route exact path="/anecdotes/:id" render={({ match }) =>
             <Anecdote anecdote={anecdoteById(match.params.id)} />
           } />
