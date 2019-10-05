@@ -31,9 +31,9 @@ const update = async (blogId, newObj) => {
   return response.data
 }
 
-const remove = (blogId) => {
+const remove = async (blogId) => {
   const config = getHeaders()
-  const response = axios.delete(`${baseUrl}/${blogId}`, config)
+  const response = await axios.delete(`${baseUrl}/${blogId}`, config)
   return response.data
 }
 

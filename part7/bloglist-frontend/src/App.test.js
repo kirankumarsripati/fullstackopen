@@ -4,6 +4,8 @@ import {
   waitForElement,
 } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
+import { Provider } from 'react-redux'
+import store from './store'
 import App from './App'
 
 jest.mock('./services/blogs')
@@ -11,9 +13,15 @@ jest.mock('./services/blogs')
 describe('<App />', () => {
   test('if no user logged, blogs are not rendered', async () => {
     const component = render(
-      <App />,
+      <Provider store={store}>
+        <App />
+      </Provider>,
     )
-    component.rerender(<App />)
+    component.rerender(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+    )
 
     await waitForElement(
       () => component.getByText('login'),
@@ -35,9 +43,15 @@ describe('<App />', () => {
     localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
 
     const component = render(
-      <App />,
+      <Provider store={store}>
+        <App />
+      </Provider>,
     )
-    component.rerender(<App />)
+    component.rerender(
+      <Provider store={store}>
+        <App />
+      </Provider>,
+    )
 
     await waitForElement(
       () => component.container.querySelector('.blog'),

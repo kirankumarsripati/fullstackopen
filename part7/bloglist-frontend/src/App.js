@@ -6,21 +6,27 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import loginService from './services/login'
-import { useField, useResource } from './hooks'
+import { useField } from './hooks'
 import {
   setNotification,
 } from './reducers/notificationReducer'
+import {
+  setToken,
+  getBlogs,
+  deleteBlog,
+  likeBlog,
+} from './reducers/blogReducer'
 
 const App = (props) => {
-  const [blogs, blogService] = useResource('/api/blogs')
+  const {
+    blogs,
+    setToken: dispatchSetToken,
+    getBlogs: dispatchGetBlogs,
+  } = props
   const username = useField('text')
   const password = useField('password')
   const [user, setUser] = useState(null)
 
-  // create new blog
-  const title = useField('text')
-  const author = useField('text')
-  const url = useField('text')
   const [createBlogVisible, setCreateBlogVisible] = useState(false)
 
   const hideWhenVisible = { display: createBlogVisible ? 'none' : '' }
@@ -31,9 +37,13 @@ const App = (props) => {
     if (loggedUserJSON) {
       const userInfo = JSON.parse(loggedUserJSON)
       setUser(userInfo)
-      blogService.setToken(userInfo.token)
+      dispatchSetToken(userInfo.token)
     }
-  }, [])
+  }, [dispatchSetToken])
+
+  useEffect(() => {
+    dispatchGetBlogs()
+  }, [dispatchGetBlogs])
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -46,7 +56,7 @@ const App = (props) => {
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(userInfo))
 
       setUser(userInfo)
-      blogService.setToken(userInfo.token)
+      props.setToken(userInfo.token)
       username.reset()
       password.reset()
     } catch (exception) {
@@ -57,23 +67,8 @@ const App = (props) => {
   const handleLogout = async (event) => {
     event.preventDefault()
     setUser(null)
+    setToken('')
     window.localStorage.clear()
-  }
-
-  const handleCreate = async (event) => {
-    event.preventDefault()
-    const blog = {
-      title: title.value,
-      author: author.value,
-      url: url.value,
-    }
-    await blogService.create(blog)
-
-    title.reset()
-    author.reset()
-    url.reset()
-
-    props.setNotification(`a new blog ${blog.title} by ${blog.author} added`)
   }
 
   const handleLike = (blog) => async (event) => {
@@ -87,14 +82,14 @@ const App = (props) => {
       url: blog.url,
     }
 
-    const updatedBlog = await blogService.update(blog.id, blogToUpdate)
+    await props.likeBlog(blogToUpdate)
 
-    props.setNotification(`blog ${updatedBlog.title} by ${updatedBlog.author} liked!`)
+    props.setNotification(`blog ${blogToUpdate.title} by ${blogToUpdate.author} liked!`)
   }
 
   const handleDelete = (blog) => async (event) => {
     event.preventDefault()
-    await blogService.remove(blog.id)
+    await props.deleteBlog(blog.id)
 
     props.setNotification(`blog ${blog.title} by ${blog.author} deleted!`)
   }
@@ -126,12 +121,7 @@ const App = (props) => {
               <button type="button" onClick={() => setCreateBlogVisible(true)}>add blog</button>
             </div>
             <div style={showWhenVisible}>
-              <BlogForm
-                handleCreate={handleCreate}
-                title={title}
-                author={author}
-                url={url}
-              />
+              <BlogForm />
               <button type="button" onClick={() => setCreateBlogVisible(false)}>cancel</button>
             </div>
             <h2>blogs</h2>
@@ -152,10 +142,23 @@ const App = (props) => {
 
 App.propTypes = {
   setNotification: PropTypes.func.isRequired,
+  setToken: PropTypes.func.isRequired,
+  getBlogs: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired,
+  likeBlog: PropTypes.func.isRequired,
+  blogs: PropTypes.array.isRequired,
 }
+
+const mapStateToProps = (state) => ({
+  blogs: state.blogs.blogs,
+})
 
 const mapDispatchToProps = {
   setNotification,
+  setToken,
+  getBlogs,
+  likeBlog,
+  deleteBlog,
 }
 
-export default connect(null, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

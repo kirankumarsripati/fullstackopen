@@ -1,7 +1,10 @@
+const SET_NOTIFICATION = 'SET_NOTIFICATION'
+const CLEAR_NOTIFICATION = 'CLEAR_NOTIFICATION'
+
 export const setNotification = (content, type = 'success', time = 5) => (dispatch) => {
   dispatch({
-    type: 'SET_NOTIFICATION',
-    data: {
+    type: SET_NOTIFICATION,
+    payload: {
       content,
       type,
     },
@@ -9,7 +12,7 @@ export const setNotification = (content, type = 'success', time = 5) => (dispatc
 
   setTimeout(() => {
     dispatch({
-      type: 'CLEAR_NOTIFICATION',
+      type: CLEAR_NOTIFICATION,
     })
   }, time * 1000)
 }
@@ -19,9 +22,9 @@ const reducer = (state = {
   type: '',
 }, action) => {
   switch (action.type) {
-    case 'SET_NOTIFICATION':
-      return action.data
-    case 'CLEAR_NOTIFICATION':
+    case SET_NOTIFICATION:
+      return action.payload
+    case CLEAR_NOTIFICATION:
       return {
         content: '',
         type: '',

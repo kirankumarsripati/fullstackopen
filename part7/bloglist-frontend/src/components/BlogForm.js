@@ -1,9 +1,15 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { setNotification } from '../reducers/notificationReducer'
+import { addBlog } from '../reducers/blogReducer'
+import { useField } from '../hooks'
 
-const BlogForm = ({
-  handleCreate, title, author, url,
-}) => {
+const BlogForm = (props) => {
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
+
   const localTitle = {
     ...title,
     reset: undefined,
@@ -17,6 +23,23 @@ const BlogForm = ({
   const localUrl = {
     ...url,
     reset: undefined,
+  }
+
+  const handleCreate = async (event) => {
+    event.preventDefault()
+    const blog = {
+      title: title.value,
+      author: author.value,
+      url: url.value,
+    }
+
+    await props.addBlog(blog)
+
+    title.reset()
+    author.reset()
+    url.reset()
+
+    props.setNotification(`a new blog ${blog.title} by ${blog.author} added`)
   }
 
   return (
@@ -51,10 +74,13 @@ const BlogForm = ({
 }
 
 BlogForm.propTypes = {
-  handleCreate: PropTypes.func.isRequired,
-  title: PropTypes.object.isRequired,
-  author: PropTypes.object.isRequired,
-  url: PropTypes.object.isRequired,
+  setNotification: PropTypes.func.isRequired,
+  addBlog: PropTypes.func.isRequired,
 }
 
-export default BlogForm
+const mapDispatchToProps = {
+  setNotification,
+  addBlog,
+}
+
+export default connect(null, mapDispatchToProps)(BlogForm)

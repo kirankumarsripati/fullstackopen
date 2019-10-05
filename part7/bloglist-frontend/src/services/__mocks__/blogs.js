@@ -39,6 +39,9 @@ const blogs = [
 
 const getAll = () => Promise.resolve(blogs)
 
+const setToken = (token) => token
+
 export default {
+  setToken,
   getAll,
 }
