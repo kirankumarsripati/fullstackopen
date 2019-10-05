@@ -5,27 +5,30 @@ import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
-import loginService from './services/login'
 import { useField } from './hooks'
 import {
   setNotification,
 } from './reducers/notificationReducer'
 import {
-  setToken,
   getBlogs,
   deleteBlog,
   likeBlog,
 } from './reducers/blogReducer'
+import {
+  getUser,
+  logIn,
+  logOut,
+} from './reducers/userReducer'
 
 const App = (props) => {
   const {
     blogs,
-    setToken: dispatchSetToken,
+    user,
+    getUser: dispatchGetUser,
     getBlogs: dispatchGetBlogs,
   } = props
   const username = useField('text')
   const password = useField('password')
-  const [user, setUser] = useState(null)
 
   const [createBlogVisible, setCreateBlogVisible] = useState(false)
 
@@ -33,13 +36,8 @@ const App = (props) => {
   const showWhenVisible = { display: createBlogVisible ? '' : 'none' }
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserJSON) {
-      const userInfo = JSON.parse(loggedUserJSON)
-      setUser(userInfo)
-      dispatchSetToken(userInfo.token)
-    }
-  }, [dispatchSetToken])
+    dispatchGetUser()
+  }, [dispatchGetUser])
 
   useEffect(() => {
     dispatchGetBlogs()
@@ -48,15 +46,11 @@ const App = (props) => {
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
-      const userInfo = await loginService.login({
+      await props.logIn({
         username: username.value,
         password: password.value,
       })
 
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(userInfo))
-
-      setUser(userInfo)
-      props.setToken(userInfo.token)
       username.reset()
       password.reset()
     } catch (exception) {
@@ -66,9 +60,7 @@ const App = (props) => {
 
   const handleLogout = async (event) => {
     event.preventDefault()
-    setUser(null)
-    setToken('')
-    window.localStorage.clear()
+    props.logOut()
   }
 
   const handleLike = (blog) => async (event) => {
@@ -96,7 +88,7 @@ const App = (props) => {
 
   return (
     <div>
-      { user === null
+      { !user
         ? (
           <div>
             <h2>login to application</h2>
@@ -142,20 +134,26 @@ const App = (props) => {
 
 App.propTypes = {
   setNotification: PropTypes.func.isRequired,
-  setToken: PropTypes.func.isRequired,
+  logIn: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
   getBlogs: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,
   likeBlog: PropTypes.func.isRequired,
   blogs: PropTypes.array.isRequired,
+  user: PropTypes.object,
 }
 
 const mapStateToProps = (state) => ({
-  blogs: state.blogs.blogs,
+  blogs: state.blogs,
+  user: state.user,
 })
 
 const mapDispatchToProps = {
   setNotification,
-  setToken,
+  logIn,
+  logOut,
+  getUser,
   getBlogs,
   likeBlog,
   deleteBlog,

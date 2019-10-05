@@ -5,11 +5,11 @@ const baseUrl = '/api/blogs'
 let token = null
 
 const getHeaders = () => ({
-  headers: { Authorization: token },
+  headers: { Authorization: `bearer ${token}` },
 })
 
-const setToken = (newToken) => {
-  token = `bearer ${newToken}`
+const setToken = (value) => {
+  token = value
 }
 
 const getAll = () => {
@@ -38,5 +38,9 @@ const remove = async (blogId) => {
 }
 
 export default {
-  setToken, getAll, create, update, remove,
+  setToken,
+  getAll,
+  create,
+  update,
+  remove,
 }
