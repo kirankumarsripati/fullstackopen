@@ -88,7 +88,7 @@ const App = (props) => {
 
   return (
     <div>
-      { !user
+      { !user.token
         ? (
           <div>
             <h2>login to application</h2>
@@ -141,7 +141,7 @@ App.propTypes = {
   deleteBlog: PropTypes.func.isRequired,
   likeBlog: PropTypes.func.isRequired,
   blogs: PropTypes.array.isRequired,
-  user: PropTypes.object,
+  user: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({

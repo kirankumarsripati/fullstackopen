@@ -25,11 +25,11 @@ export const logOut = () => (dispatch) => {
   })
 }
 
-const reducer = (state = null, action) => {
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case GET_USER: {
       const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-      const user = loggedUserJSON ? JSON.parse(loggedUserJSON) : null
+      const user = loggedUserJSON ? JSON.parse(loggedUserJSON) : {}
       return user
     }
     case SET_USER:
@@ -37,7 +37,7 @@ const reducer = (state = null, action) => {
       return action.payload
     case LOG_OUT:
       window.localStorage.removeItem('loggedBlogAppUser')
-      return null
+      return {}
     default:
       return state
   }
