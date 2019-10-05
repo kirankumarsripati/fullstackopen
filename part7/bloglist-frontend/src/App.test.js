@@ -1,6 +1,7 @@
 import React from 'react'
 import {
-  render, waitForElement
+  render,
+  waitForElement,
 } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
 import App from './App'
@@ -10,12 +11,12 @@ jest.mock('./services/blogs')
 describe('<App />', () => {
   test('if no user logged, blogs are not rendered', async () => {
     const component = render(
-      <App />
+      <App />,
     )
     component.rerender(<App />)
 
     await waitForElement(
-      () => component.getByText('login')
+      () => component.getByText('login'),
     )
 
     expect(component.container).toHaveTextContent('username')
@@ -28,13 +29,13 @@ describe('<App />', () => {
     const user = {
       username: 'tester',
       token: '1231231214',
-      name: 'Donald Tester'
+      name: 'Donald Tester',
     }
 
     localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
 
     const component = render(
-      <App />
+      <App />,
     )
     component.rerender(<App />)
 
