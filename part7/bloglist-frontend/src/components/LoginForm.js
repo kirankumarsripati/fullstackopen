@@ -23,6 +23,7 @@ const LoginForm = ({
         <input
           {...localUsername}
           name="Username"
+          autoComplete="username"
         />
       </div>
       <div>
@@ -30,6 +31,7 @@ const LoginForm = ({
         <input
           {...localPassword}
           name="Password"
+          autoComplete="current-password"
         />
       </div>
       <button type="submit">login</button>
