@@ -1,21 +1,31 @@
-export const setNotification = (content, time = 5) => (dispatch) => {
+export const setNotification = (content, type = 'success', time = 5) => (dispatch) => {
   dispatch({
     type: 'SET_NOTIFICATION',
-    data: content,
+    data: {
+      content,
+      type,
+    },
   })
 
   setTimeout(() => {
     dispatch({
-      type: 'SET_NOTIFICATION',
-      data: null,
+      type: 'CLEAR_NOTIFICATION',
     })
   }, time * 1000)
 }
 
-const reducer = (state = '', action) => {
+const reducer = (state = {
+  content: '',
+  type: '',
+}, action) => {
   switch (action.type) {
     case 'SET_NOTIFICATION':
       return action.data
+    case 'CLEAR_NOTIFICATION':
+      return {
+        content: '',
+        type: '',
+      }
     default:
       return state
   }
