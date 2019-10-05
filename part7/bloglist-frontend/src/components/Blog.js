@@ -35,25 +35,21 @@ const Blog = ({
         ? (
           <div>
             <div onClick={toggleExpand} className="blog">
-              {blog.title}
-              {blog.author}
+              {blog.title} {blog.author}
             </div>
             <a href={blog.url}>{blog.url}</a>
             <br />
             {blog.likes}
             <button type="button" onClick={handleLike}>like</button>
             <br />
-            added by
-            {blog.user.name}
+            added by {blog.user.name}
             <br />
             { username === blog.user.username && <button type="button" onClick={confirmDelete}>remove</button>}
           </div>
         )
         : (
           <div onClick={toggleExpand} className="blog">
-            {blog.title}
-            {' '}
-            {blog.author}
+            {blog.title}  {blog.author}
           </div>
         )}
     </div>
