@@ -7,6 +7,12 @@ const getUsers = async () => {
   return response.data
 }
 
+const getUser = async (userId) => {
+  const response = await axios.get(`${baseUrl}/${userId}`)
+  return response.data
+}
+
 export default {
   getUsers,
+  getUser,
 }

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { getUsers } from '../reducers/usersReducer'
 
 const Users = (props) => {
@@ -26,7 +27,11 @@ const Users = (props) => {
         <tbody>
           {users.map((user) => (
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td>
+                <Link to={`/users/${user.id}`}>
+                  {user.name}
+                </Link>
+              </td>
               <td>{user.blogs.length}</td>
             </tr>
           ))}
@@ -42,7 +47,7 @@ Users.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  users: state.users,
+  users: state.users.users,
 })
 
 const mapDispatchToProps = {

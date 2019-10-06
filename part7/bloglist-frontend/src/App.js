@@ -6,6 +6,7 @@ import Login from './components/Login'
 import Blogs from './components/Blogs'
 import Notification from './components/Notification'
 import Users from './components/Users'
+import User from './components/User'
 import {
   getUser,
   logOut,
@@ -39,6 +40,7 @@ const App = (props) => {
             <Router>
               <Route exact path="/" render={() => <Blogs />} />
               <Route exact path="/users" render={() => <Users />} />
+              <Route exact path="/users/:id" render={({ match }) => <User userId={match.params.id} />} />
             </Router>
           </div>
         )}
