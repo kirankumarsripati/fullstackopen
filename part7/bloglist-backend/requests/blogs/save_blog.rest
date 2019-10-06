@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/blogs HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtpcmFua3VtYXIxIiwiaWQiOiI1ZDhmNmI0MDhlMzMwMjJkMGI5YTkwYjMiLCJpYXQiOjE1Njk2ODEzNDd9.X6Rspxhbgxq2JKLDceSOC8mMCkdF64FitAq5U3fTijk
+content-type: application/json
+
+{
+  "title": "my first blog",
+  "author": "Kirankumar Sripati",
+  "url": "https://example.com/blog/1",
+  "likes": 10,
+  "user": "5d87a78dd8acbe116b28261a"
+}
