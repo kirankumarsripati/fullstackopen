@@ -1,6 +1,7 @@
 import blogService from '../services/blogs'
 
 const GET_BLOGS = 'GET_BLOGS'
+const GET_BLOG = 'GET_BLOG'
 const ADD_BLOG = 'ADD_BLOG'
 const DELETE_BLOG = 'DELETE_BLOG'
 const LIKE_BLOG = 'LIKE_BLOG'
@@ -10,6 +11,19 @@ export const getBlogs = () => async (dispatch) => {
   dispatch({
     type: GET_BLOGS,
     payload: blogs,
+  })
+}
+
+export const getBlog = (id) => async (dispatch, getState) => {
+  const { blogs } = getState()
+  const found = blogs.find((b) => b.id === id)
+  if (found) {
+    return
+  }
+  const blog = await blogService.get(id)
+  dispatch({
+    type: GET_BLOG,
+    payload: blog,
   })
 }
 
@@ -46,6 +60,8 @@ const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_BLOGS:
       return [...action.payload]
+    case GET_BLOG:
+      return state.concat(action.payload)
     case ADD_BLOG:
       return state.concat(action.payload)
     case DELETE_BLOG:

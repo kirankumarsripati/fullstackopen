@@ -17,6 +17,11 @@ const getAll = () => {
   return request.then((response) => response.data)
 }
 
+const get = (id) => {
+  const request = axios.get(`${baseUrl}/${id}`)
+  return request.then((response) => response.data)
+}
+
 const create = async (newObj) => {
   const config = getHeaders()
 
@@ -40,6 +45,7 @@ const remove = async (blogId) => {
 export default {
   setToken,
   getAll,
+  get,
   create,
   update,
   remove,

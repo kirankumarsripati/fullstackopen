@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { getUserBlogs } from '../reducers/usersReducer'
 
 const User = (props) => {
@@ -24,7 +25,9 @@ const User = (props) => {
       <h3>added blogs</h3>
       <ul>
         {user.blogs && user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title}</li>
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>
         ))}
       </ul>
     </div>
