@@ -8,6 +8,7 @@ import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Users from './components/Users'
 import User from './components/User'
+import Navigation from './components/Navigation'
 import {
   getUser,
   logOut,
@@ -23,40 +24,32 @@ const App = (props) => {
     dispatchGetUser()
   }, [dispatchGetUser])
 
-  const handleLogout = async (event) => {
-    event.preventDefault()
-    props.logOut()
-  }
-
   return (
     <div>
       <Notification />
       { !user.token
         ? <Login />
         : (
-          <div>
-            <h2>blogs</h2>
-            <p>{user.name} logged in</p>
-            <button type="button" onClick={handleLogout}>Logout</button>
-            <Router>
-              <Route exact path="/" render={() => <Blogs />} />
-              <Route exact path="/users" render={() => <Users />} />
-              <Route
-                exact
-                path="/users/:id"
-                render={({ match }) => (
-                  <User userId={match.params.id} />
-                )}
-              />
-              <Route
-                exact
-                path="/blogs/:id"
-                render={({ match }) => (
-                  <Blog blogId={match.params.id} />
-                )}
-              />
-            </Router>
-          </div>
+          <Router>
+            <Navigation />
+            <h2>blog app</h2>
+            <Route exact path="/" render={() => <Blogs />} />
+            <Route exact path="/users" render={() => <Users />} />
+            <Route
+              exact
+              path="/users/:id"
+              render={({ match }) => (
+                <User userId={match.params.id} />
+              )}
+            />
+            <Route
+              exact
+              path="/blogs/:id"
+              render={({ match }) => (
+                <Blog blogId={match.params.id} />
+              )}
+            />
+          </Router>
         )}
     </div>
   )
@@ -65,7 +58,6 @@ const App = (props) => {
 App.propTypes = {
   getUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  logOut: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({

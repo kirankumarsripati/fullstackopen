@@ -77,13 +77,11 @@ Blog.propTypes = {
   user: PropTypes.object.isRequired,
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    blog: state.blogs
-      .find((b) => b.id === ownProps.blogId) || {},
-    user: state.user,
-  }
-}
+const mapStateToProps = (state, ownProps) => ({
+  blog: state.blogs
+    .find((b) => b.id === ownProps.blogId) || {},
+  user: state.user,
+})
 
 const mapDispatchToProps = {
   setNotification,
