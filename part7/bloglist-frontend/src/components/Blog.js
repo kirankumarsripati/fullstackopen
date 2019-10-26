@@ -63,6 +63,13 @@ const Blog = (props) => {
       added by {blog.user.name}
       <br />
       { user.username === blog.user.username && <button type="button" onClick={handleDelete(blog)}>remove</button>}
+      <h3>comments</h3>
+      {blog.comments && (
+      <ul>
+        {blog.comments
+          .map((comment) => <li key={comment.id}>{comment.comment}</li>)}
+      </ul>
+      )}
     </div>
   )
 }

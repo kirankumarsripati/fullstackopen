@@ -17,10 +17,10 @@ beforeEach(async () => {
   await user.save()
 
   const blogObjects = helper.initialBlogs
-    .map((blog) => {
-      blog.user = user._id
-      return new Blog(blog)
-    })
+    .map((blog) => new Blog({
+      ...blog,
+      user: user._id,
+    }))
 
   const auth = await api
     .post('/api/login')
