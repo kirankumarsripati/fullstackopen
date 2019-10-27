@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import {
+  Button,
+  List,
+  ListItem,
+  Typography,
+} from '@material-ui/core'
 import BlogForm from './BlogForm'
 import {
   setNotification,
@@ -25,22 +31,24 @@ const Blogs = (props) => {
   }, [dispatchGetBlogs])
 
   return (
-    <div>
+    <>
       <div style={hideWhenVisible}>
-        <button type="button" onClick={() => setCreateBlogVisible(true)}>add blog</button>
+        <Button type="button" onClick={() => setCreateBlogVisible(true)}>add blog</Button>
       </div>
       <div style={showWhenVisible}>
         <BlogForm />
-        <button type="button" onClick={() => setCreateBlogVisible(false)}>cancel</button>
+        <Button type="Button" onClick={() => setCreateBlogVisible(false)}>cancel</Button>
       </div>
-      <ul>
+      <List>
         { blogs.map((blog) => (
-          <li key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </li>
+          <ListItem key={blog.id}>
+            <Typography>
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            </Typography>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </>
   )
 }
 

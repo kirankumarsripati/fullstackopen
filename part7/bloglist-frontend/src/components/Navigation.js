@@ -1,10 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  makeStyles,
+} from '@material-ui/core'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logOut } from '../reducers/userReducer'
 
+const useStyles = makeStyles({
+  appBar: {
+    marginBottom: 20,
+  },
+  title: {
+    marginRight: 20,
+  },
+  link: {
+    color: 'white',
+    marginRight: 20,
+  },
+})
+
 const Navigation = (props) => {
+  const classes = useStyles()
+
   const {
     user,
   } = props
@@ -14,11 +36,19 @@ const Navigation = (props) => {
   }
 
   return (
-    <div>
-      <Link to="/">blogs</Link>
-      <Link to="/users">users</Link>
-      { user.token ? user.name : '' } logged in <button type="button" onClick={handleLogout}>Logout</button>
-    </div>
+    <AppBar className={classes.appBar}>
+      <Toolbar>
+        <Typography variant="h6" className={classes.title}>
+          Bloglist
+        </Typography>
+        <Typography>
+          <Link to="/" className={classes.link}>blogs</Link>
+          <Link to="/users" className={classes.link}>users</Link>
+          { user.token ? user.name : '' } logged in
+          <Button onClick={handleLogout}>Logout</Button>
+        </Typography>
+      </Toolbar>
+    </AppBar>
   )
 }
 

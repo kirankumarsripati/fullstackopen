@@ -2,6 +2,13 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import {
+  Typography,
+  Link,
+  Button,
+  TextField,
+  Grid,
+} from '@material-ui/core'
+import {
   getBlog,
   likeBlog,
   deleteBlog,
@@ -75,24 +82,31 @@ const Blog = (props) => {
 
   return (
     <div className="blog">
-      <h2>
+      <Typography variant="h5">
         {blog.title} {blog.author}
-      </h2>
-      <a href={blog.url}>{blog.url}</a>
-      <br />
-      {blog.likes}
-      <button type="button" onClick={handleLike(blog)}>like</button>
-      <br />
-      added by {blog.user.name}
-      <br />
-      { user.username === blog.user.username && <button type="button" onClick={handleDelete(blog)}>remove</button>}
-      <h3>comments</h3>
+      </Typography>
+      <Typography>
+        <Link href={blog.url}>{blog.url}</Link>
+        <br />
+        {blog.likes}
+        <Button type="button" onClick={handleLike(blog)}>like</Button>
+        <br />
+        added by {blog.user.name}
+        <br />
+        { user.username === blog.user.username && <Button type="button" onClick={handleDelete(blog)}>remove</Button>}
+      </Typography>
+      <Typography variant="h5">
+        comments
+      </Typography>
       <form onSubmit={handleAddComment}>
-        <input
-          {...localComment}
-          name="comment"
-        />
-        <button type="submit">add comment</button>
+        <Grid container>
+          <TextField
+            {...localComment}
+            label="Comment"
+            name="comment"
+          />
+          <Button type="submit">add comment</Button>
+        </Grid>
       </form>
       {blog.comments && (
       <ul>

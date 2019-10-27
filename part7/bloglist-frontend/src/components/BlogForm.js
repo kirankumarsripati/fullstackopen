@@ -1,11 +1,26 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import {
+  Paper,
+  Typography,
+  makeStyles,
+  TextField,
+  Button,
+} from '@material-ui/core'
 import { setNotification } from '../reducers/notificationReducer'
 import { addBlog } from '../reducers/blogReducer'
 import { useField } from '../hooks'
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3, 2),
+  },
+}))
+
 const BlogForm = (props) => {
+  const classes = useStyles()
+
   const title = useField('text')
   const author = useField('text')
   const url = useField('text')
@@ -43,33 +58,32 @@ const BlogForm = (props) => {
   }
 
   return (
-    <div>
-      <h2>create new</h2>
+    <Paper className={classes.root}>
+      <Typography variant="h5">
+        create new
+      </Typography>
       <form onSubmit={handleCreate}>
-        <div>
-          title:
-          <input
-            {...localTitle}
-            name="title"
-          />
-        </div>
-        <div>
-          author:
-          <input
-            {...localAuthor}
-            name="author"
-          />
-        </div>
-        <div>
-          url:
-          <input
-            {...localUrl}
-            name="url"
-          />
-        </div>
-        <button type="submit">create</button>
+        <TextField
+          {...localTitle}
+          label="Title"
+          fullWidth
+          name="title"
+        />
+        <TextField
+          {...localAuthor}
+          label="Author"
+          fullWidth
+          name="author"
+        />
+        <TextField
+          {...localUrl}
+          label="Url"
+          fullWidth
+          name="url"
+        />
+        <Button type="submit">create</Button>
       </form>
-    </div>
+    </Paper>
   )
 }
 

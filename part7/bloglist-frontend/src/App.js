@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import Container from '@material-ui/core/Container'
+
 import Login from './components/Login'
 import Blogs from './components/Blogs'
 import Blog from './components/Blog'
@@ -25,7 +27,7 @@ const App = (props) => {
   }, [dispatchGetUser])
 
   return (
-    <div>
+    <Container>
       <Notification />
       { !user.token
         ? <Login />
@@ -51,7 +53,7 @@ const App = (props) => {
             />
           </Router>
         )}
-    </div>
+    </Container>
   )
 }
 

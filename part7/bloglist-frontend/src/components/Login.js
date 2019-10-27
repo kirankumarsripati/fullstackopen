@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { Paper, makeStyles, Typography } from '@material-ui/core'
 import LoginForm from './LoginForm'
 import { useField } from '../hooks'
 import {
@@ -10,7 +11,15 @@ import {
   logIn,
 } from '../reducers/userReducer'
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3, 2),
+  },
+}))
+
 const Login = (props) => {
+  const classes = useStyles()
+
   const username = useField('text')
   const password = useField('password')
 
@@ -30,14 +39,16 @@ const Login = (props) => {
   }
 
   return (
-    <div>
-      <h2>login to application</h2>
+    <Paper className={classes.root}>
+      <Typography variant="h5">
+        Login to application
+      </Typography>
       <LoginForm
         handleLogin={handleLogin}
         username={username}
         password={password}
       />
-    </div>
+    </Paper>
   )
 }
 
