@@ -5,10 +5,12 @@ import {
   getBlog,
   likeBlog,
   deleteBlog,
+  addComment,
 } from '../reducers/blogReducer'
 import {
   setNotification,
 } from '../reducers/notificationReducer'
+import { useField } from '../hooks'
 
 const Blog = (props) => {
   const {
@@ -21,6 +23,13 @@ const Blog = (props) => {
   useEffect(() => {
     dispatchGetBlog(blogId)
   }, [dispatchGetBlog, blogId])
+
+  const commentField = useField('text')
+
+  const localComment = {
+    ...commentField,
+    reset: undefined,
+  }
 
   const handleDelete = (cBlog) => async (event) => {
     if (window.confirm(`remove blog ${blog.title} by ${blog.author}`)) {
@@ -50,6 +59,20 @@ const Blog = (props) => {
     return null
   }
 
+  const handleAddComment = async (event) => {
+    event.preventDefault()
+
+    try {
+      const commentResp = await props
+        .addComment(commentField.value, blogId)
+
+      props.setNotification(`Added comment ${commentResp.comment}!`)
+      commentField.reset()
+    } catch (exception) {
+      props.setNotification(`Comment add failed ${exception}`, 'error')
+    }
+  }
+
   return (
     <div className="blog">
       <h2>
@@ -64,6 +87,13 @@ const Blog = (props) => {
       <br />
       { user.username === blog.user.username && <button type="button" onClick={handleDelete(blog)}>remove</button>}
       <h3>comments</h3>
+      <form onSubmit={handleAddComment}>
+        <input
+          {...localComment}
+          name="comment"
+        />
+        <button type="submit">add comment</button>
+      </form>
       {blog.comments && (
       <ul>
         {blog.comments
@@ -79,6 +109,7 @@ Blog.propTypes = {
   getBlog: PropTypes.func.isRequired,
   likeBlog: PropTypes.func.isRequired,
   deleteBlog: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired,
   blog: PropTypes.object.isRequired,
   blogId: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
@@ -95,6 +126,7 @@ const mapDispatchToProps = {
   getBlog,
   likeBlog,
   deleteBlog,
+  addComment,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Blog)

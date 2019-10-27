@@ -5,6 +5,7 @@ const GET_BLOG = 'GET_BLOG'
 const ADD_BLOG = 'ADD_BLOG'
 const DELETE_BLOG = 'DELETE_BLOG'
 const LIKE_BLOG = 'LIKE_BLOG'
+const ADD_COMMENT = 'ADD_COMMENT'
 
 export const getBlogs = () => async (dispatch) => {
   const blogs = await blogService.getAll()
@@ -56,6 +57,20 @@ export const likeBlog = (blog) => async (dispatch, getState) => {
   return updatedBlog
 }
 
+export const addComment = (comment, blogId) => async (dispatch, getState) => {
+  blogService.setToken(getState().user.token)
+  const commentResponse = await blogService
+    .addComment(comment, blogId)
+  dispatch({
+    type: ADD_COMMENT,
+    payload: {
+      blogId,
+      comment: commentResponse,
+    },
+  })
+  return commentResponse
+}
+
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_BLOGS:
@@ -71,6 +86,13 @@ const reducer = (state = [], action) => {
       const blog = action.payload
       return state
         .map((b) => (b.id !== blog.id ? b : blog))
+    }
+    case ADD_COMMENT: {
+      const commentedBlog = state
+        .find((b) => (b.id === action.payload.blogId))
+      commentedBlog.comments.push(action.payload.comment)
+      return state
+        .map((b) => (b.id !== commentedBlog.id ? b : commentedBlog))
     }
     default:
       return state

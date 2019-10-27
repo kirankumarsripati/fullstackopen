@@ -42,6 +42,12 @@ const remove = async (blogId) => {
   return response.data
 }
 
+const addComment = async (comment, blogId) => {
+  const config = getHeaders()
+  const response = await axios.post(`${baseUrl}/${blogId}/comments`, { comment }, config)
+  return response.data
+}
+
 export default {
   setToken,
   getAll,
@@ -49,4 +55,5 @@ export default {
   create,
   update,
   remove,
+  addComment,
 }
