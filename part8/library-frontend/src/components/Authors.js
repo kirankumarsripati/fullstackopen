@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Typography,
   Table,
@@ -6,9 +6,32 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Select,
+  MenuItem,
+  TextField,
+  InputLabel,
+  FormControl,
+  Button,
 } from '@material-ui/core'
 
-const Authors = ({ show, result }) => {
+const Authors = ({ show, result, editAuthor }) => {
+  const [author, setAuthor] = useState('')
+  const [born, setBorn] = useState('')
+
+  const updateBorn = async (e) => {
+    e.preventDefault()
+
+    await editAuthor({
+      variables: {
+        name: author,
+        born: +born,
+      }
+    })
+
+    setBorn('')
+    setAuthor('')
+  }
+
   if (!show) {
     return null
   }
@@ -50,7 +73,32 @@ const Authors = ({ show, result }) => {
           )}
         </TableBody>
       </Table>
-
+      <form onSubmit={updateBorn}>
+        <Typography variant="h5">
+          Set birth year
+        </Typography>
+        <FormControl>
+          <InputLabel htmlFor="author">Author</InputLabel>
+          <Select
+            value={author}
+            onChange={({ target }) => setAuthor(target.value)}
+            inputProps={{
+              name: 'author',
+              id: 'author',
+            }}>
+            {authors.map(a =>
+              <MenuItem key={a.id} value={a.name}>{a.name}</MenuItem>
+            )}
+          </Select>
+        </FormControl>
+        <br />
+        <TextField
+          onChange={({ target }) => setBorn(target.value)}
+          type="number"
+          label="Birth Year"
+        />
+        <Button type='submit'>update author</Button>
+      </form>
     </div>
   )
 }
