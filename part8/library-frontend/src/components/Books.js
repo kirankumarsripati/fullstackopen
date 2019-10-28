@@ -1,36 +1,55 @@
 import React from 'react'
+import {
+  Typography,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@material-ui/core'
 
-const Books = (props) => {
-  if (!props.show) {
+const Books = ({ show, result }) => {
+  if (!show) {
     return null
   }
 
-  const books = []
+  if (result.loading) {
+    return <div>Loading...</div>
+  }
+
+  let books = []
+
+  if (result.data.allBooks) {
+    books = result.data.allBooks
+  }
 
   return (
     <div>
-      <h2>books</h2>
-
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>
+      <Typography variant="h5">
+        books
+      </Typography>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell>
               author
-            </th>
-            <th>
+            </TableCell>
+            <TableCell>
               published
-            </th>
-          </tr>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {books.map(a =>
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author}</td>
-              <td>{a.published}</td>
-            </tr>
+            <TableRow key={a.title}>
+              <TableCell>{a.title}</TableCell>
+              <TableCell>{a.author}</TableCell>
+              <TableCell>{a.published}</TableCell>
+            </TableRow>
           )}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   )
 }
