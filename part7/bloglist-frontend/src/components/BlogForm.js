@@ -68,20 +68,23 @@ const BlogForm = (props) => {
           label="Title"
           fullWidth
           name="title"
+          id="blogTitle"
         />
         <TextField
           {...localAuthor}
           label="Author"
           fullWidth
           name="author"
+          id="blogAuthor"
         />
         <TextField
           {...localUrl}
           label="Url"
           fullWidth
           name="url"
+          id="blogUrl"
         />
-        <Button type="submit">create</Button>
+        <Button type="submit" id="createBlog">create</Button>
       </form>
     </Paper>
   )

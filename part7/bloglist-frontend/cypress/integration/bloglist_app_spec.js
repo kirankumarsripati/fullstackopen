@@ -22,6 +22,22 @@ describe('Bloglist ', () => {
     cy.get('#login').click()
     cy.contains('Kirankumar Sripati logged in')
     cy.contains('add blog')
+
+    cy.get('#addBlog').click()
+    cy.get('#blogTitle').type('My awsome blog')
+    cy.get('#blogAuthor').type('Kirankumar')
+    cy.get('#blogUrl').type('https://kirankumar.sripati/blog/1')
+    cy.get('#createBlog').click()
+    cy.contains('My awsome blog')
+    cy.get('#blogs')
+      .contains('My awsome blog')
+      .click()
+    cy.contains('My awsome blog Kirankumar')
+
+    cy.get('#comment').type('nice blog!')
+    cy.get('#addComment').click()
+    cy.contains('nice blog!')
+
     cy.get('#logout').click()
     cy.contains('Login to application')
   })

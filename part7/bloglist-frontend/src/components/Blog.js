@@ -104,8 +104,9 @@ const Blog = (props) => {
             {...localComment}
             label="Comment"
             name="comment"
+            id="comment"
           />
-          <Button type="submit">add comment</Button>
+          <Button type="submit" id="addComment">add comment</Button>
         </Grid>
       </form>
       {blog.comments && (

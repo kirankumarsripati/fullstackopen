@@ -33,13 +33,13 @@ const Blogs = (props) => {
   return (
     <>
       <div style={hideWhenVisible}>
-        <Button type="button" onClick={() => setCreateBlogVisible(true)}>add blog</Button>
+        <Button type="button" onClick={() => setCreateBlogVisible(true)} id="addBlog">add blog</Button>
       </div>
       <div style={showWhenVisible}>
         <BlogForm />
         <Button type="button" onClick={() => setCreateBlogVisible(false)}>cancel</Button>
       </div>
-      <List>
+      <List id="blogs">
         { blogs.map((blog) => (
           <ListItem key={blog.id}>
             <Typography>
