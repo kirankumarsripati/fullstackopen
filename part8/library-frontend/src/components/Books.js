@@ -44,7 +44,7 @@ const Books = ({ show, result }) => {
           {books.map(a =>
             <TableRow key={a.id}>
               <TableCell>{a.title}</TableCell>
-              <TableCell>{a.author}</TableCell>
+              <TableCell>{a.author.name}</TableCell>
               <TableCell>{a.published}</TableCell>
             </TableRow>
           )}

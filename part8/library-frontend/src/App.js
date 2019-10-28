@@ -22,8 +22,13 @@ const ALL_BOOKS = gql`
   allBooks {
     id
     title
-    author
     published
+    author {
+      id
+      name
+      born
+      bookCount
+    }
   }
 }
 `
@@ -43,7 +48,12 @@ mutation createBook(
   ) {
     id
     title
-    author
+    author {
+      id
+      name
+      born
+      bookCount
+    }
     published
     genres
   }
