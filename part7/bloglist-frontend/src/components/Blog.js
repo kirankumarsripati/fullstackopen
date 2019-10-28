@@ -88,8 +88,8 @@ const Blog = (props) => {
       <Typography>
         <Link href={blog.url}>{blog.url}</Link>
         <br />
-        {blog.likes}
-        <Button type="button" onClick={handleLike(blog)}>like</Button>
+        <span id="blogLikes">{blog.likes}</span>
+        <Button id="likeButton" type="button" onClick={handleLike(blog)}>like</Button>
         <br />
         added by {blog.user.name}
         <br />
