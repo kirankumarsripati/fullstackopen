@@ -144,7 +144,10 @@ const resolvers = {
   Mutation: {
     addBook: (root, args) => {
       // add new book to books
-      const newBook = { ...args }
+      const newBook = {
+        ...args,
+        id: uuid(),
+      }
       books = books.concat(newBook)
 
       // check if book author exists,

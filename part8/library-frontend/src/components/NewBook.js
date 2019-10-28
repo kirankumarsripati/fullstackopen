@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
+import { TextField, Button } from '@material-ui/core'
 
-const NewBook = (props) => {
+const NewBook = ({ show, addBook }) => {
   const [title, setTitle] = useState('')
   const [author, setAuhtor] = useState('')
   const [published, setPublished] = useState('')
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
-  if (!props.show) {
+  if (!show) {
     return null
   }
 
@@ -15,6 +16,15 @@ const NewBook = (props) => {
     e.preventDefault()
 
     console.log('add book...')
+
+    await addBook({
+      variables: {
+        title,
+        author,
+        published: +published,
+        genres,
+      }
+    })
 
     setTitle('')
     setPublished('')
@@ -32,38 +42,39 @@ const NewBook = (props) => {
     <div>
       <form onSubmit={submit}>
         <div>
-          title
-          <input
+          <TextField
+            label="Title"
             value={title}
             onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
-          author
-          <input
+          <TextField
+            label="Author"
             value={author}
             onChange={({ target }) => setAuhtor(target.value)}
           />
         </div>
         <div>
-          published
-          <input
+          <TextField
+            label="Published"
             type='number'
             value={published}
             onChange={({ target }) => setPublished(target.value)}
           />
         </div>
         <div>
-          <input
+          <TextField
+            label="Genre"
             value={genre}
             onChange={({ target }) => setGenre(target.value)}
           />
-          <button onClick={addGenre} type="button">add genre</button>
+          <Button onClick={addGenre} type="button">add genre</Button>
         </div>
         <div>
           genres: {genres.join(' ')}
         </div>
-        <button type='submit'>create book</button>
+        <Button type='submit'>create book</Button>
       </form>
     </div>
   )

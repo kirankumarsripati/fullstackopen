@@ -42,7 +42,7 @@ const Books = ({ show, result }) => {
         </TableHead>
         <TableBody>
           {books.map(a =>
-            <TableRow key={a.title}>
+            <TableRow key={a.id}>
               <TableCell>{a.title}</TableCell>
               <TableCell>{a.author}</TableCell>
               <TableCell>{a.published}</TableCell>

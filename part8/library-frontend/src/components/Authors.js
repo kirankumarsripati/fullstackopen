@@ -42,7 +42,7 @@ const Authors = ({ show, result }) => {
         </TableHead>
         <TableBody>
           {authors.map(a =>
-            <TableRow key={a.name}>
+            <TableRow key={a.id}>
               <TableCell>{a.name}</TableCell>
               <TableCell>{a.born}</TableCell>
               <TableCell>{a.bookCount}</TableCell>
