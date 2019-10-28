@@ -26,6 +26,7 @@ const LoginForm = ({
         fullWidth
         label="Username"
         name="Username"
+        id="username"
       />
       <TextField
         {...localPassword}
@@ -33,8 +34,9 @@ const LoginForm = ({
         fullWidth
         label="Password"
         name="Password"
+        id="password"
       />
-      <Button type="submit">login</Button>
+      <Button type="submit" id="login">login</Button>
     </form>
   )
 }

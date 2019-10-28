@@ -37,7 +37,7 @@ const Blogs = (props) => {
       </div>
       <div style={showWhenVisible}>
         <BlogForm />
-        <Button type="Button" onClick={() => setCreateBlogVisible(false)}>cancel</Button>
+        <Button type="button" onClick={() => setCreateBlogVisible(false)}>cancel</Button>
       </div>
       <List>
         { blogs.map((blog) => (

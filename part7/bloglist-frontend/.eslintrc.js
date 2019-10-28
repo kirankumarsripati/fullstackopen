@@ -3,11 +3,13 @@ module.exports = {
     browser: true,
     es6: true,
     jest: true,
-    'jest/globals': true
+    'jest/globals': true,
+    'cypress/globals': true,
   },
   extends: [
     'airbnb',
-    'plugin:react/recommended'
+    'plugin:react/recommended',
+    'plugin:cypress/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -23,6 +25,7 @@ module.exports = {
   plugins: [
     'react',
     'jest',
+    'cypress',
   ],
   rules: {
     'no-console': 0,
@@ -41,5 +44,12 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'import/no-extraneous-dependencies': 0,
     'react/jsx-one-expression-per-line': 0,
+    'spaced-comment': [
+      "error",
+      "always",
+      {
+        "markers": ["/"]
+      },
+    ]
   },
 };

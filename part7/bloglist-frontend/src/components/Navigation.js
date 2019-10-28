@@ -45,7 +45,7 @@ const Navigation = (props) => {
           <Link to="/" className={classes.link}>blogs</Link>
           <Link to="/users" className={classes.link}>users</Link>
           { user.token ? user.name : '' } logged in
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button onClick={handleLogout} id="logout">Logout</Button>
         </Typography>
       </Toolbar>
     </AppBar>

@@ -28,10 +28,10 @@ const config = {
     port: 3000,
     proxy: [
       {
-        path: "/api",
-        target: "http://localhost:3003"
-      }
-    ]
+        path: '/api',
+        target: 'http://localhost:3003',
+      },
+    ],
   },
   devtool: 'source-map',
 }
