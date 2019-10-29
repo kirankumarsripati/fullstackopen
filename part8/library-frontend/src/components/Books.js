@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core'
 import BookList from './BookList'
 
-const Books = ({ show, result, selectedGenre, setGenre }) => {
+const Books = ({ show, result, userResult, updateGenre }) => {
   const buttonActive = {
     backgroundColor: "#acbaba",
   }
@@ -19,11 +19,21 @@ const Books = ({ show, result, selectedGenre, setGenre }) => {
     return <div>Loading...</div>
   }
 
-  let books = []
-  let existingGenres = []
+  const saveGenre = async (genre) => {
+    await updateGenre({
+      variables: {
+        genre
+      }
+    })
+  }
 
-  if (result.data.allBooks) {
+  let books = []
+  let existingGenres
+  let selectedGenre;
+
+  if (result.data.allBooks && userResult) {
     books = result.data.allBooks
+    selectedGenre = userResult.data.me.favoriteGenre
 
     existingGenres = new Set()
     books.forEach((book) => {
@@ -31,10 +41,6 @@ const Books = ({ show, result, selectedGenre, setGenre }) => {
         existingGenres.add(genre)
       })
     })
-  }
-
-  const selectGenre = (genre) => {
-    setGenre(selectedGenre === genre ? null : genre)
   }
 
   return (
@@ -53,7 +59,7 @@ const Books = ({ show, result, selectedGenre, setGenre }) => {
       </Typography>
       <ButtonGroup>
         {[...existingGenres]
-          .map((genre) => <Button style={genre === selectedGenre ? buttonActive : null} key={genre} onClick={() => selectGenre(genre)}>{genre}</Button>)}
+          .map((genre) => <Button style={genre === selectedGenre ? buttonActive : null} key={genre} onClick={() => saveGenre(genre)}>{genre}</Button>)}
       </ButtonGroup>
     </div>
   )

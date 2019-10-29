@@ -21,6 +21,28 @@ mutation login(
   }
 }
 `
+
+const CURRENT_USER = gql`
+{
+  me {
+    username
+    favoriteGenre
+  }
+}
+`
+
+const UPDATE_FAV_GENRE = gql`
+mutation changeGenre(
+  $genre: String!,
+) {
+  updateGenre(
+    favoriteGenre: $genre,
+  ) {
+    favoriteGenre,
+  }
+}
+`
+
 const ALL_AUTHORS = gql`
 {
   allAuthors {
@@ -96,7 +118,6 @@ const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
-  const [selectedGenre, setSelectedGenre] = useState(null)
   const client = useApolloClient()
 
   const handleError = (e) => {
@@ -126,6 +147,7 @@ const App = () => {
 
   const authorResult = useQuery(ALL_AUTHORS)
   const bookResult = useQuery(ALL_BOOKS)
+  const userResult = useQuery(CURRENT_USER)
   const [addBook,] = useMutation(CREATE_BOOK, {
     onError: handleError,
     refetchQueries: [
@@ -137,6 +159,12 @@ const App = () => {
     onError: handleError,
     refetchQueries: [
       { query: ALL_AUTHORS },
+    ]
+  })
+  const [updateGenre,] = useMutation(UPDATE_FAV_GENRE, {
+    onError: handleError,
+    refetchQueries: [
+      { query: CURRENT_USER },
     ]
   })
 
@@ -173,14 +201,14 @@ const App = () => {
       <Books
         show={page === 'books'}
         result={bookResult}
-        selectedGenre={selectedGenre}
-        setGenre={setSelectedGenre}
+        userResult={userResult}
+        updateGenre={updateGenre}
       />
 
       <Recommendations
         show={page === 'recommended'}
         result={bookResult}
-        genre={selectedGenre}
+        userResult={userResult}
       />
 
       <NewBook

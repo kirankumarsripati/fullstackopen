@@ -74,6 +74,9 @@ const typeDefs = gql`
       username: String!
       favoriteGenre: String!
     ): User
+    updateGenre(
+      favoriteGenre: String!
+    ): User
     login(
       username: String!
       password: String!
@@ -176,6 +179,21 @@ const resolvers = {
         }
       } else {
         return null
+      }
+    },
+    updateGenre: async (root, args, {currentUser}) => {
+      if (!currentUser) {
+        throw new AuthenticationError('Please login to change author details')
+      }
+
+      currentUser.favoriteGenre = args.favoriteGenre
+
+      try {
+        return currentUser.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
       }
     },
     createUser: async (root, args) => {

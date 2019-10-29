@@ -2,7 +2,7 @@ import React from 'react'
 import BookList from './BookList'
 import { Typography } from '@material-ui/core'
 
-const Recommendations = ({ show, result, genre }) => {
+const Recommendations = ({ show, result, userResult }) => {
   if (!show) {
     return null
   }
@@ -11,8 +11,9 @@ const Recommendations = ({ show, result, genre }) => {
     return <div>Loading...</div>
   }
 
-  if (result.data.allBooks) {
+  if (result.data.allBooks && userResult) {
     const books = result.data.allBooks
+    const genre = userResult.data.me.favoriteGenre
     return (
       <div>
         <Typography variant="h5">
