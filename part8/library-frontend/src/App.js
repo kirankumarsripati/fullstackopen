@@ -1,10 +1,25 @@
 import React, { useState } from 'react'
 import { gql } from 'apollo-boost'
-import { useQuery, useMutation } from 'react-apollo'
+import { useQuery, useMutation, useApolloClient } from 'react-apollo'
 import { Button } from '@material-ui/core'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import LoginForm from './components/LoginForm'
+
+const LOGIN = gql`
+mutation login(
+  $username: String!,
+  $password: String!,
+) {
+  login(
+    username: $username,
+    password: $password,
+  ) {
+    value
+  }
+}
+`
 
 const ALL_AUTHORS = gql`
 {
@@ -77,8 +92,10 @@ mutation updateAuthor(
 `
 
 const App = () => {
+  const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
+  const client = useApolloClient()
 
   const handleError = (e) => {
     if (e.graphQLErrors) {
@@ -89,6 +106,20 @@ const App = () => {
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)
+  }
+
+  const [login,] = useMutation(LOGIN, {
+    onError: handleError,
+  })
+  const loginSuccess = (token) => {
+    setToken(token)
+    setPage('authors')
+  }
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+    setPage('authors')
   }
 
   const authorResult = useQuery(ALL_AUTHORS)
@@ -112,12 +143,23 @@ const App = () => {
       <div>
         <Button onClick={() => setPage('authors')}>authors</Button>
         <Button onClick={() => setPage('books')}>books</Button>
-        <Button onClick={() => setPage('add')}>add book</Button>
+        {token ? (
+          <>
+            <Button onClick={() => setPage('add')}>add book</Button>
+            <Button onClick={() => logout()}>Logout</Button>
+          </>
+        ) : <Button onClick={() => setPage('login')}>Login</Button>}
       </div>
 
       <div>
         {errorMessage && <div className="error">{errorMessage}</div>}
       </div>
+
+      <LoginForm
+        show={page === 'login'}
+        login={login}
+        loginSuccess={(token) => loginSuccess(token)}
+      />
 
       <Authors
         show={page === 'authors'}
