@@ -38,7 +38,7 @@ mutation createBook(
   $title: String!,
   $author: String!,
   $published: Int!,
-  $genres: [String]!
+  $genres: [String!]!
 ) {
   addBook(
     title: $title,
@@ -81,7 +81,11 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   const handleError = (e) => {
-    setErrorMessage(e)
+    if (e.graphQLErrors) {
+      setErrorMessage(e.graphQLErrors[0].message)
+    } else {
+      setErrorMessage(e.errors[0].message)
+    }
     setTimeout(() => {
       setErrorMessage(null)
     }, 5000)

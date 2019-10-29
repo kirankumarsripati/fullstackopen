@@ -25,7 +25,7 @@ const typeDefs = gql`
     title: String!
     published: Int!
     author: Author!
-    genres: [String]
+    genres: [String!]!
   }
 
   type Author {
@@ -101,7 +101,13 @@ const resolvers = {
         authorId = authorExists._id
       } else {
         let newAuthor = new Author({ name: author })
-        await newAuthor.save()
+        try {
+          await newAuthor.save()
+        } catch (error) {
+          throw new UserInputError(error.message, {
+            invalidArgs: args
+          })
+        }
         authorId = newAuthor._id
       }
 
@@ -111,7 +117,14 @@ const resolvers = {
         published,
         genres,
       })
-      await newBook.save()
+
+      try {
+        await newBook.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
       return Book.findById(newBook._id).populate('author')
     },
     editAuthor: async (root, args) => {
