@@ -1,18 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Typography,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   Button,
   ButtonGroup,
 } from '@material-ui/core'
+import BookList from './BookList'
 
-const Books = ({ show, result }) => {
-  const [selectedGenre, setSelectedGenre] = useState(null)
-
+const Books = ({ show, result, selectedGenre, setGenre }) => {
   const buttonActive = {
     backgroundColor: "#acbaba",
   }
@@ -39,58 +33,27 @@ const Books = ({ show, result }) => {
     })
   }
 
-  const setGenre = (genre) => {
-    setSelectedGenre(selectedGenre === genre ? null : genre)
+  const selectGenre = (genre) => {
+    setGenre(selectedGenre === genre ? null : genre)
   }
 
   return (
     <div>
       <Typography variant="h5">
-        books
+        Books
       </Typography>
       { selectedGenre && (
         <span>
           in <strong>{selectedGenre}</strong>
         </span>
       )}
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell></TableCell>
-            <TableCell>
-              author
-            </TableCell>
-            <TableCell>
-              published
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {books.map(a => {
-            let isSelectedGenre = (selectedGenre === null)
-            if (!isSelectedGenre) {
-              isSelectedGenre = a.genres.includes(selectedGenre)
-            }
-            if (isSelectedGenre) {
-              return (
-                <TableRow key={a.id}>
-                  <TableCell>{a.title}</TableCell>
-                  <TableCell>{a.author.name}</TableCell>
-                  <TableCell>{a.published}</TableCell>
-                </TableRow>
-              )
-            } else {
-              return null
-            }
-          })}
-        </TableBody>
-      </Table>
+      <BookList books={books} selectedGenre={selectedGenre} />
       <Typography variant="h5">
         Genres
       </Typography>
       <ButtonGroup>
         {[...existingGenres]
-          .map((genre) => <Button style={genre === selectedGenre ? buttonActive : null} key={genre} onClick={() => setGenre(genre)}>{genre}</Button>)}
+          .map((genre) => <Button style={genre === selectedGenre ? buttonActive : null} key={genre} onClick={() => selectGenre(genre)}>{genre}</Button>)}
       </ButtonGroup>
     </div>
   )

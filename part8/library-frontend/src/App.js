@@ -6,6 +6,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
+import Recommendations from './components/Recommendations'
 
 const LOGIN = gql`
 mutation login(
@@ -20,7 +21,6 @@ mutation login(
   }
 }
 `
-
 const ALL_AUTHORS = gql`
 {
   allAuthors {
@@ -96,6 +96,7 @@ const App = () => {
   const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [selectedGenre, setSelectedGenre] = useState(null)
   const client = useApolloClient()
 
   const handleError = (e) => {
@@ -147,6 +148,7 @@ const App = () => {
         {token ? (
           <>
             <Button onClick={() => setPage('add')}>add book</Button>
+            <Button onClick={() => setPage('recommended')}>Recommended</Button>
             <Button onClick={() => logout()}>Logout</Button>
           </>
         ) : <Button onClick={() => setPage('login')}>Login</Button>}
@@ -171,6 +173,14 @@ const App = () => {
       <Books
         show={page === 'books'}
         result={bookResult}
+        selectedGenre={selectedGenre}
+        setGenre={setSelectedGenre}
+      />
+
+      <Recommendations
+        show={page === 'recommended'}
+        result={bookResult}
+        genre={selectedGenre}
       />
 
       <NewBook

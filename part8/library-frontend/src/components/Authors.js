@@ -49,7 +49,7 @@ const Authors = ({ show, result, editAuthor }) => {
   return (
     <div>
       <Typography variant="h5">
-        authors
+        Authors
       </Typography>
       <Table>
         <TableHead>

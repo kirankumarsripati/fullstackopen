@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextField, Button } from '@material-ui/core'
+import { TextField, Button, Typography } from '@material-ui/core'
 
 const NewBook = ({ show, addBook }) => {
   const [title, setTitle] = useState('')
@@ -40,6 +40,9 @@ const NewBook = ({ show, addBook }) => {
 
   return (
     <div>
+      <Typography variant="h5">
+        Add Book
+      </Typography>
       <form onSubmit={submit}>
         <div>
           <TextField
